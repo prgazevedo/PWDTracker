@@ -18,34 +18,21 @@ const String QUICK_START = "d:quickstart:arduino:";
 //https://quickstart.internetofthings.ibmcloud.com
 const String DEVICE_ID = "cc50e398fb30";
 
-//Concatemos o id do quickstart com o id do nosso
-//dispositivo
+//MQTT ClientId 
 const String CLIENT_ID =  QUICK_START + DEVICE_ID;
 
-//Cliente WiFi que o MQTT irá utilizar para se conectar
+//Wifi Client
 WiFiClient wifiClient;
 
-//Cliente MQTT, passamos a url do server, a porta
-//e o cliente WiFi
+//Client MQTT,server URL and port + Wifi
 PubSubClient client(MQTT_SERVER, 1883, wifiClient);
 
-//Intervalo entre os envios
-#define INTERVAL 500
-
-//Tempo do último envio
-long lastSendTime = 0;
-
-
-void _setupMQTT(){
-  Serial.println("setupMQTT called");
-  setupWiFi();
-  connectMQTTServer();
-}
 
 //Connect to server MQTT
 void connectMQTTServer() {
   Serial.println("connectMQTTServer:Connecting to MQTT Server...");
-  //Se conecta ao id que definimos
+  OLED_write("Connecting to MQTT Server..."); 
+  //Connect to the Id we defined
   if (client.connect(CLIENT_ID.c_str())) {
     //if success connecting
     Serial.println("connected");
@@ -53,6 +40,7 @@ void connectMQTTServer() {
     Serial.print("error = ");
     Serial.println(client.state());
   }
+  OLED_write("Connected to MQTT server");
 }
 
 
@@ -66,14 +54,11 @@ void testMAC(){
 //Connect to WiFi
 void setupWiFi() {
   Serial.println("setupWiFi called");
-  Serial.print("Connecting to ");
-  Serial.print(SSID);
-
   testMAC();
- 
-
+  Serial.println("Connecting to WIFI: "+String(SSID_NAME)); 
+  OLED_write("Connecting to WIFI: "+String(SSID_NAME)); 
   //Connect using SSID and PASSWORD
-  WiFi.begin(SSID, PASSWORD);
+  WiFi.begin(SSID_NAME, PASSWORD);
 
   //Wait until established
   while (WiFi.status() != WL_CONNECTED) {
@@ -83,19 +68,18 @@ void setupWiFi() {
 
   //If here it has Connected
   Serial.println("");
-  Serial.println("WiFi connected to"+ SSID);
+  Serial.println("WiFi connected to"+String( SSID_NAME));
+  OLED_write("Connected to "+String( SSID_NAME));
 }
 
 
-void publishData(){
-       Serial.print("Publish message: ");
-      //create the json to send to the mqtt server
-      String msg = createJsonString();
-      Serial.println(msg);
-      //Publish in the topic 
-      //to generate the graph
-      client.publish(TOPIC_NAME, msg.c_str());
+void _setupMQTT(){
+  Serial.println("setupMQTT called");
+  setupWiFi();
+  connectMQTTServer();
 }
+
+
 
 String createJsonString() {
   String json = "{";
@@ -105,9 +89,24 @@ String createJsonString() {
       json+=",";
       json+="\"Time\":";
       json+=String(pdata.timeMillis);
+      json+=",";
+      json+="\"Latitude\":";
+      json+=String(gdata.latitude);
+      json+=",";
+      json+="\"Longitude\":";
+      json+=String(gdata.longitude);
     json+="}";
   json+="}";
   return json;
 }
 
-#endif
+void _publishData(){
+       Serial.print("Publish message: ");
+      //create the json to send to the mqtt server
+      String msg = createJsonString();
+      Serial.println(msg);
+      //Publish in the topic 
+      //to generate the graph
+      client.publish(TOPIC_NAME, msg.c_str());
+      OLED_PUB_DATA();
+}

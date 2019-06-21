@@ -58,24 +58,50 @@ void setup()
 
 }
 
+bool timer(){
+  if (millis() - lastSendTime > INTERVAL){
+      //time since last send
+      lastSendTime = millis();
+      return true;
+ } 
+ else return false;
 
+}
 
+bool newData(){
+  if (pdata.timeMillis > lastSendTime + INTERVAL ){
+      //time since last send
+      lastSendTime = pdata.timeMillis;
+      return true;
+ } 
+ else return false;
+
+}
 
 
 void loop()
 { 
+
   if(_ROLE==0)
   {
-    //_ROLE==SENDER
-    _Send();
-    _LEDBlink();
-    _getGPS();
+     if (timer()){
+      
+     //_ROLE==SENDER
+      _Send();
+      _LEDBlink();
+      _getGPS();
+     }
   }
   else
   {
     //_ROLE==RECEIVER
     _Receive();
+    if(newData())
+    {
+       _publishData();
+    }
     _LEDBlink();
+    
   }
 
 }

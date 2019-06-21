@@ -47,9 +47,11 @@ void _sendPacket() {
   pdata.ID = packetID++;
   pdata.timeMillis = millis();                        // increment message ID
   LoRa.write((uint8_t*)&pdata, sizeof(pdata));
+  LoRa.write((uint8_t*)&gdata, sizeof(gdata));
   payload_size = payload_data.length();
   LoRa.write(payload_size);           // add payload length
   LoRa.print(payload_data);                // add payload
+
   LoRa.endPacket(); 
 }
 
@@ -71,6 +73,7 @@ void _parsePacket() {
    //packetID =  LoRa.read();
    //time_stamp =  LoRa.read();         
    LoRa.readBytes((uint8_t*)&pdata, sizeof(pdata));
+   LoRa.readBytes((uint8_t*)&gdata, sizeof(gdata));
    payload_size = LoRa.read();
   // payload of packet
   while (LoRa.available())

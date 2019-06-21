@@ -7,14 +7,17 @@
 
 //WIFI Vars
 //network SSID
-#define SSID "WLAN2"
+#define SSID_NAME "WLAN2"
 //password
 #define PASSWORD "pedro2chave2"
 
 //LORA Vars
 const int _SPREADING = 9; //spreading factor
-const String _SUBVERSION = "2";
-
+const String _SUBVERSION = "4";
+//Interval in ms between sending data to other Lora
+#define INTERVAL 500
+//Time of last Lora data packet
+long lastSendTime = 0;
 // LORA Pin definition
 #define SCK     5    // GPIO5  -- SX127x's SCK
 #define MISO    19   // GPIO19 -- SX127x's MISO
@@ -47,5 +50,14 @@ long time_stamp = 0;        // last send time
 //OLED 
 //parameters: address,SDA,SCL 
 SSD1306 display(0x3c, 4, 15); //display object 
+
+//LORA data struct to send
+typedef struct {
+ float latitude;
+ float longitude;
+}gpsData;
+gpsData gdata;
+
+
 
 #endif

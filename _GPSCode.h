@@ -38,7 +38,7 @@ float latitude;
 float longitude;
 
 static const int RXPin = 22, TXPin = 23;
-static const uint32_t GPSBaud = 4800;
+static const uint32_t GPSBaud = 9600;
 
 // For stats that happen every 5 seconds
 unsigned long last = 0UL;
@@ -108,6 +108,8 @@ String _encodeLocation(){
   char temp[2]={' ','\0'};
   latitude  = gps.location.lat();
   longitude = gps.location.lng();
+  gdata.latitude = latitude;
+  gdata.longitude = longitude;
   if((latitude && longitude) && latitude != latlong.f[0]
       && longitude != latlong.f[1])
       {     
@@ -283,9 +285,16 @@ void _writeSerialGPS(){
   }
 }
 
+void basicGPSDebug(){
+  if (Serial2.available()) Serial.println(Serial2.read());
+  else Serial.println("No data available");
+}
+
 void _getGPS()
 {
     Serial.println("_getGPS called");
+    //basicGPSDebug();
+    
     _encodeGPS();
     //_encodeTestStream();
     _encodeLocationSummary();
@@ -294,5 +303,5 @@ void _getGPS()
     Serial.println("_encodeLocation called");
     _writeSerialGPS();
     Serial.println("_writeSerialGPS called");
-
+   
 }

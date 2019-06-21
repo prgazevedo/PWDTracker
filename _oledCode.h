@@ -46,21 +46,26 @@ void OLED_write(int a, int b, String toWrite){
 void OLED_COMMS_DATA(){
   OLED_clear();
   if(_ROLE==0)OLED_write(0,0,"V1."+_SUBVERSION+"-Sender: ");
-  else OLED_write(0,0,"V1."+_SUBVERSION+"-Receiver-"+SSID);
+  else OLED_write(0,0,"V1."+_SUBVERSION+"-Receiver-"+SSID_NAME);
   OLED_write(0,10,"Packet Id:");
   OLED_write(60,10,String(pdata.ID));
   OLED_write(0,20,"TimeStamp:");
   OLED_write(60,20,String(pdata.timeMillis));
-  OLED_write(0,30,"Payload:");
-  OLED_write(60,30,payload_data);
-  OLED_write(0,40,"Packet size: ");
-  OLED_write(60,40,String(payload_size));
+  OLED_write(0,30,"Latitude:");
+  OLED_write(60,30,String(gdata.latitude));
+  OLED_write(0,40,"Longitude: ");
+  OLED_write(60,40,String(gdata.longitude));
  if(_ROLE==1)
   {
     OLED_write(0,50,"RSSI/SNR: ");
     OLED_write(60,50,String(rssi_value)+"/");
     OLED_write(80,50,String(snr_value));
   }
+
+}
+
+void OLED_PUB_DATA(){
+    OLED_write(95,50,"PUB");
 
 }
 
