@@ -32,7 +32,7 @@ void _SerialInit()
   Serial.begin(115200);
   while (!Serial);
   delay(50); 
-  writeSerial("LoRa Start");
+  writeSerial("_SerialInit");
 }
 
 void log_packet_data(){
@@ -49,8 +49,8 @@ void log_packet_data(){
    writeSerial(" destination:"+String(destinationAddress, HEX));
    writeSerial(" counter:"+String(pdata.ID));
    writeSerial(" time_stamp:"+String(pdata.timeMillis));
-   writeSerial(" latitude:"+String(gdata.latitude));
-   writeSerial(" longitude:"+String(gdata.longitude));
+   writeSerial(" latitude:"+String(gdata.latitude,8));
+   writeSerial(" longitude:"+String(gdata.longitude,8));
    writeSerial(" payload size:"+String(payload_size,DEC));
    writeSerial(" payload:"+payload_data);
    if(_ROLE==1)

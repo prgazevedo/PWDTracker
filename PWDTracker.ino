@@ -31,7 +31,7 @@
 #include "_const.h"
 #include "images.h" //Logo
 #include "_MQTT.h"
-
+#include "_File.h"
 
 
 void setup()
@@ -42,6 +42,8 @@ void setup()
   _SerialInit();
   _OledInit();
   _LoraInit();
+  _Fileinit();
+  writeSerial(_readPassword());
   #if _ROLE == 0
    writeSerial("setup Sender called");
     
@@ -53,7 +55,7 @@ void setup()
       writeSerial("setup Receiver called");
       _setupMQTT();
   #endif
-  
+
   writeSerial("setup Ended");
 
 }

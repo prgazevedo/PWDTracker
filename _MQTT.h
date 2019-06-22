@@ -2,8 +2,10 @@
 
 #include <PubSubClient.h>
 #include <WiFi.h>
+#include "_File.h"
 
-
+const size_t cSize = 20;
+char cStr [cSize];
 //Server MQTT 
 #define MQTT_SERVER "quickstart.messaging.internetofthings.ibmcloud.com"
 
@@ -58,7 +60,20 @@ void setupWiFi() {
   Serial.println("Connecting to WIFI: "+String(SSID_NAME)); 
   OLED_write("Connecting to WIFI: "+String(SSID_NAME)); 
   //Connect using SSID and PASSWORD
-  WiFi.begin(SSID_NAME, PASSWORD);
+     Serial.print("password:");
+   String password = _readPassword();
+   const char* cpassword = password.c_str();
+   /*
+    for (int i = 0; i < strlen(cpassword); ++i) {
+          Serial.printf("%02x ", cpassword[i]);
+        }
+        Serial.println("");
+  */
+  if(password!=""){
+ 
+    WiFi.begin(SSID_NAME, cpassword);
+  }
+  else Serial.println("No password found - cannot connect to wifi");
 
   //Wait until established
   while (WiFi.status() != WL_CONNECTED) {
@@ -91,10 +106,10 @@ String createJsonString() {
       json+=String(pdata.timeMillis);
       json+=",";
       json+="\"Latitude\":";
-      json+=String(gdata.latitude);
+      json+=String(gdata.latitude,8);
       json+=",";
       json+="\"Longitude\":";
-      json+=String(gdata.longitude);
+      json+=String(gdata.longitude,8);
     json+="}";
   json+="}";
   return json;

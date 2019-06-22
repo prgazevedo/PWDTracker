@@ -20,6 +20,7 @@
 #include "_LED.h" 
 
 void _LoraInit(){
+  writeSerial("_LoraInit");
     //LORA INIT
   SPI.begin(SCK,MISO,MOSI,SS); //INIT SERIAL WITH LORA
   LoRa.setPins(SS,RST,DI00); //PINOUT to be used by LORA library (deve ser chamado antes do LoRa.begin)

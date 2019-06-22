@@ -52,9 +52,9 @@ void OLED_COMMS_DATA(){
   OLED_write(0,20,"TimeStamp:");
   OLED_write(60,20,String(pdata.timeMillis));
   OLED_write(0,30,"Latitude:");
-  OLED_write(60,30,String(gdata.latitude));
+  OLED_write(60,30,String(gdata.latitude,8));
   OLED_write(0,40,"Longitude: ");
-  OLED_write(60,40,String(gdata.longitude));
+  OLED_write(60,40,String(gdata.longitude,8));
  if(_ROLE==1)
   {
     OLED_write(0,50,"RSSI/SNR: ");
@@ -74,7 +74,7 @@ void logo(){
 
    display.clear();
    display.setFont(ArialMT_Plain_16); //large font
-   OLED_write(0,30, "PWD_v2 STARTING");
+   OLED_write(0,30, "PWD V1."+_SUBVERSION+" STARTING");
    delay(1500);
    display.setFont(ArialMT_Plain_10); //small font
    display.clear();
@@ -84,6 +84,7 @@ void logo(){
 }
 
 void _OledInit(){
+  writeSerial("_OledInit");
   //OLED PIN OUT CFG
   pinMode(16,OUTPUT); //OLED PIN OUT
   digitalWrite(16, LOW);    // OLED RESET

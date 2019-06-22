@@ -8,12 +8,11 @@
 //WIFI Vars
 //network SSID
 #define SSID_NAME "WLAN2"
-//password
-#define PASSWORD "pedro2chave2"
+
 
 //LORA Vars
 const int _SPREADING = 9; //spreading factor
-const String _SUBVERSION = "4";
+const String _SUBVERSION = "5";
 //Interval in ms between sending data to other Lora
 #define INTERVAL 500
 //Time of last Lora data packet
