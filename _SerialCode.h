@@ -49,8 +49,8 @@ void log_packet_data(){
    writeSerial(" destination:"+String(destinationAddress, HEX));
    writeSerial(" counter:"+String(pdata.ID));
    writeSerial(" time_stamp:"+String(pdata.timeMillis));
-   writeSerial(" latitude:"+String(gdata.latitude,8));
-   writeSerial(" longitude:"+String(gdata.longitude,8));
+   writeSerial(" latitude:"+g_latitude);
+   writeSerial(" longitude:"+g_longitude);
    writeSerial(" payload size:"+String(payload_size,DEC));
    writeSerial(" payload:"+payload_data);
    if(_ROLE==1)

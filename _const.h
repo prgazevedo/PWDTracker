@@ -7,14 +7,16 @@
 
 //WIFI Vars
 //network SSID
+#define WIFI_MODE WIFI_AP_STA   //Alternatives 
 #define SSID_NAME "WLAN2"
-
-
+#define WIFI_TIMER 500
+#define WIFI_RETRIES  5
+#define WEBSERVER_INTERVAL 1500
 //LORA Vars
 const int _SPREADING = 9; //spreading factor
-const String _SUBVERSION = "5";
+const String _SUBVERSION = "8";
 //Interval in ms between sending data to other Lora
-#define INTERVAL 500
+#define LORA_SEND_INTERVAL 500
 //Time of last Lora data packet
 long lastSendTime = 0;
 // LORA Pin definition
@@ -49,14 +51,15 @@ long time_stamp = 0;        // last send time
 //OLED 
 //parameters: address,SDA,SCL 
 SSD1306 display(0x3c, 4, 15); //display object 
-
+#define FRAME_DELAY 500 
+#define LOGO_DELAY 5000 
 //LORA data struct to send
 typedef struct {
  float latitude;
  float longitude;
 }gpsData;
 gpsData gdata;
-
-
+String g_latitude ="";
+String g_longitude ="";
 
 #endif

@@ -1,8 +1,6 @@
 
 
 #include <PubSubClient.h>
-#include <WiFi.h>
-#include "_File.h"
 
 const size_t cSize = 20;
 char cStr [cSize];
@@ -22,17 +20,16 @@ const String DEVICE_ID = "cc50e398fb30";
 
 //MQTT ClientId 
 const String CLIENT_ID =  QUICK_START + DEVICE_ID;
-
 //Wifi Client
 WiFiClient wifiClient;
-
 //Client MQTT,server URL and port + Wifi
 PubSubClient client(MQTT_SERVER, 1883, wifiClient);
 
 
 //Connect to server MQTT
-void connectMQTTServer() {
+void _connectMQTTServer() {
   Serial.println("connectMQTTServer:Connecting to MQTT Server...");
+  Serial.println("Configured MAC for MQTT is: "+DEVICE_ID);
   OLED_write("Connecting to MQTT Server..."); 
   //Connect to the Id we defined
   if (client.connect(CLIENT_ID.c_str())) {
@@ -45,54 +42,6 @@ void connectMQTTServer() {
   OLED_write("Connected to MQTT server");
 }
 
-
-//test Wifi MAC
-void testMAC(){
-  WiFi.mode(WIFI_MODE_STA);
-  Serial.println("Wifi of device is: "+WiFi.macAddress());
-  Serial.println("Configured MAC for MQTT is: "+DEVICE_ID);
-}
-
-//Connect to WiFi
-void setupWiFi() {
-  Serial.println("setupWiFi called");
-  testMAC();
-  Serial.println("Connecting to WIFI: "+String(SSID_NAME)); 
-  OLED_write("Connecting to WIFI: "+String(SSID_NAME)); 
-  //Connect using SSID and PASSWORD
-     Serial.print("password:");
-   String password = _readPassword();
-   const char* cpassword = password.c_str();
-   /*
-    for (int i = 0; i < strlen(cpassword); ++i) {
-          Serial.printf("%02x ", cpassword[i]);
-        }
-        Serial.println("");
-  */
-  if(password!=""){
- 
-    WiFi.begin(SSID_NAME, cpassword);
-  }
-  else Serial.println("No password found - cannot connect to wifi");
-
-  //Wait until established
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-
-  //If here it has Connected
-  Serial.println("");
-  Serial.println("WiFi connected to"+String( SSID_NAME));
-  OLED_write("Connected to "+String( SSID_NAME));
-}
-
-
-void _setupMQTT(){
-  Serial.println("setupMQTT called");
-  setupWiFi();
-  connectMQTTServer();
-}
 
 
 

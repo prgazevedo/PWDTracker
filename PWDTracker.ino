@@ -29,14 +29,15 @@
 #include "_GPSCode.h" //GPS code
 #include "_LoraCode.h" //Lora Code
 #include "_const.h"
-#include "images.h" //Logo
-#include "_MQTT.h"
+#include "_WifiConnection.h"
 #include "_File.h"
+#include "_WebServer.h"
+#include "_MQTT.h"
 
 
 void setup()
 {
-  writeSerial("setup Begin");
+  writeSerial("PWD setup Begin");
   //LED CFG
   pinMode(25,OUTPUT);
   _SerialInit();
@@ -53,32 +54,16 @@ void setup()
   #if _ROLE == 1
       // only compile MQTT if in receiver mode
       writeSerial("setup Receiver called");
-      _setupMQTT();
+      _setupWifiConnection();
+      _setupAP();
+      _connectMQTTServer();
+      _setupWebServer();
   #endif
 
   writeSerial("setup Ended");
 
 }
 
-bool timer(){
-  if (millis() - lastSendTime > INTERVAL){
-      //time since last send
-      lastSendTime = millis();
-      return true;
- } 
- else return false;
-
-}
-
-bool newData(){
-  if (pdata.timeMillis > lastSendTime + INTERVAL ){
-      //time since last send
-      lastSendTime = pdata.timeMillis;
-      return true;
- } 
- else return false;
-
-}
 
 
 void loop()
@@ -86,7 +71,7 @@ void loop()
 
   if(_ROLE==0)
   {
-     if (timer()){
+     if (_sendTimer()){
       
      //_ROLE==SENDER
       _Send();
@@ -98,9 +83,14 @@ void loop()
   {
     //_ROLE==RECEIVER
     _Receive();
-    if(newData())
+    if(_receiveTimer())
     {
        _publishData();
+    }
+    if(_webClientTimer())
+    {
+        Serial.println("WiFiServer _listen called"); 
+      _listen();
     }
     _LEDBlink();
     

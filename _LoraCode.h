@@ -47,7 +47,9 @@ void _sendPacket() {
   LoRa.write(destinationAddress);      // add destination address
   pdata.ID = packetID++;
   pdata.timeMillis = millis();                        // increment message ID
+  //send pdata: ID and TimeStamp
   LoRa.write((uint8_t*)&pdata, sizeof(pdata));
+   //send gdata: Latitude and Longitude
   LoRa.write((uint8_t*)&gdata, sizeof(gdata));
   payload_size = payload_data.length();
   LoRa.write(payload_size);           // add payload length
@@ -66,27 +68,35 @@ void _Send(){
 
 }
 
+void _postParse(){
+  g_latitude = String(gdata.latitude,10);
+  g_longitude = String(gdata.longitude,10);
+  log_packet_data();
+  OLED_COMMS_DATA();
+}
+
+
 void _parsePacket() {
   writeSerial("LoRa _parsePacket Called");
   payload_data="";
    localAddress = LoRa.read(); 
-   destinationAddress = LoRa.read();          
-   //packetID =  LoRa.read();
-   //time_stamp =  LoRa.read();         
+   destinationAddress = LoRa.read();  
+   //read pdata: ID and TimeStamp               
    LoRa.readBytes((uint8_t*)&pdata, sizeof(pdata));
+   //read gdata: Latitude and Longitude
    LoRa.readBytes((uint8_t*)&gdata, sizeof(gdata));
    payload_size = LoRa.read();
-  // payload of packet
-  while (LoRa.available())
-  {
-    payload_data += (char)LoRa.read();
-  }
+    // payload of packet
+    while (LoRa.available())
+    {
+      payload_data += (char)LoRa.read();
+    }
     rssi_value = LoRa.packetRssi();
-   snr_value = LoRa.packetSnr();
+    snr_value = LoRa.packetSnr();
 
-  log_packet_data();
-  OLED_COMMS_DATA();
+   _postParse();
 }
+
 
 void _Receive(){
   //writeSerial("LoRa _parsePacket");
@@ -96,5 +106,25 @@ void _Receive(){
     writeSerial("LoRa _onReceive");
     _parsePacket();  
   }
+}
+
+  
+bool _sendTimer(){
+  if (millis() - lastSendTime > LORA_SEND_INTERVAL){
+      //time since last send
+      lastSendTime = millis();
+      return true;
+ } 
+ else return false;
+
+}
+
+bool _receiveTimer(){
+  if (pdata.timeMillis > lastSendTime + LORA_SEND_INTERVAL ){
+      //time since last send
+      lastSendTime = pdata.timeMillis;
+      return true;
+ } 
+ else return false;
 
 }

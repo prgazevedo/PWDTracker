@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 #include "_const.h"
+#include "images.h"
+
 
 int line=0;
 void increaseLine(){
@@ -52,9 +54,9 @@ void OLED_COMMS_DATA(){
   OLED_write(0,20,"TimeStamp:");
   OLED_write(60,20,String(pdata.timeMillis));
   OLED_write(0,30,"Latitude:");
-  OLED_write(60,30,String(gdata.latitude,8));
+  OLED_write(60,30,g_latitude);
   OLED_write(0,40,"Longitude: ");
-  OLED_write(60,40,String(gdata.longitude,8));
+  OLED_write(60,40,g_longitude);
  if(_ROLE==1)
   {
     OLED_write(0,50,"RSSI/SNR: ");
@@ -73,14 +75,29 @@ void OLED_PUB_DATA(){
 void logo(){
 
    display.clear();
-   display.setFont(ArialMT_Plain_16); //large font
-   OLED_write(0,30, "PWD V1."+_SUBVERSION+" STARTING");
-   delay(1500);
-   display.setFont(ArialMT_Plain_10); //small font
-   display.clear();
+   display.setFont(ArialMT_Plain_10); //large font
+   OLED_write(0,54, "PWD Ver 1."+_SUBVERSION+" STARTING");
    //logo at "images.h"
-  //display.drawXbm(0,5,PWD_width,PWD_height,PWD_bits);
-  
+   display.drawXbm(0,0,PWD_width,PWD_height,PWD_bits);
+    display.display();
+   delay(LOGO_DELAY);
+   display.clear(); 
+   display.drawXbm(21,0,FRAME_width,FRAME_height,frame1_bits);
+    display.display();
+   delay(FRAME_DELAY);
+   display.clear(); 
+   display.drawXbm(21,0,FRAME_width,FRAME_height,frame2_bits);
+    display.display();
+   delay(FRAME_DELAY);
+   display.clear(); 
+    display.drawXbm(21,0,FRAME_width,FRAME_height,frame3_bits);
+     display.display();
+    delay(FRAME_DELAY);
+    display.clear(); 
+    display.drawXbm(21,0,FRAME_width,FRAME_height,frame4_bits);
+     display.display();
+    delay(3*FRAME_DELAY); 
+    display.clear();
 }
 
 void _OledInit(){
