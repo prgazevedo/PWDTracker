@@ -19,3 +19,8 @@ In Const.h change _ROLE to either 0 or 1 //SENDER=0 RECEIVER=1
 - Use a good GPS antenna for precision outdoors
 
 
+## Usage
+ - Power up both devices (power to all via USB)
+ - Check that both devices boot up and present correct GPS data in OLED display
+ - Connect to receiver IP via http to view the location of sender device
+ - View latitude and longitude of sender in the cloud: https://quickstart.internetofthings.ibmcloud.com/#/device/cc50e398fb30/sensor/
