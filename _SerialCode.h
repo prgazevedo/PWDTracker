@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 #include "_const.h" 
+
 void writeSerial(String toWrite)
 {
   if(_ROLE==0)

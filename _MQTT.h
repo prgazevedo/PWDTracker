@@ -1,5 +1,4 @@
 
-
 #include <PubSubClient.h>
 
 const size_t cSize = 20;
@@ -55,10 +54,10 @@ String createJsonString() {
       json+=String(pdata.timeMillis);
       json+=",";
       json+="\"Latitude\":";
-      json+=String(gdata.latitude,8);
+      json+=GetGPSString(gdata.latitude);
       json+=",";
       json+="\"Longitude\":";
-      json+=String(gdata.longitude,8);
+      json+=GetGPSString(gdata.longitude);
     json+="}";
   json+="}";
   return json;

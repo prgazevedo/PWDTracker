@@ -31,7 +31,6 @@
 #include "_const.h"
 #include "_WifiConnection.h"
 #include "_File.h"
-#include "_WebServer.h"
 #include "_MQTT.h"
 
 
@@ -55,7 +54,7 @@ void setup()
       // only compile MQTT if in receiver mode
       writeSerial("setup Receiver called");
       _setupWifiConnection();
-      _setupAP();
+      //_setupAP();
       _connectMQTTServer();
       _setupWebServer();
   #endif
@@ -87,10 +86,11 @@ void loop()
     {
        _publishData();
     }
-    if(_webClientTimer())
+    if(_checkWebClientTimer())
     {
         Serial.println("WiFiServer _listen called"); 
       _listen();
+      //_checkWifiState();
     }
     _LEDBlink();
     

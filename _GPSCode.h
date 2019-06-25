@@ -101,6 +101,31 @@ void _encodeLocationSummary(){
     Serial.println(F("No GPS data received: check wiring"));
 }
 
+GpsData getRawData(TinyGPSLocation location){
+    GpsData gpsData;
+    gpsData.latitude.negative = location.rawLat().negative;
+    gpsData.latitude.deg = location.rawLat().deg;
+    gpsData.latitude.billionths =location.rawLat().billionths;
+    gpsData.longitude.negative = location.rawLng().negative;
+    gpsData.longitude.deg = location.rawLng().deg;
+    gpsData.longitude.billionths =location.rawLng().billionths;
+    return gpsData;
+}
+  
+
+String GetGPSString(coordToSend coord){
+    return (String (coord.negative ? "-" : "+")+String(coord.deg)+"."+String(coord.billionths));
+}
+
+double getLat(coordToSend rawLatData){
+   double ret = rawLatData.deg + rawLatData.billionths / 1000000000.0;
+   return rawLatData.negative ? -ret : ret;
+}
+double getLng(coordToSend rawLongData){
+   double ret = rawLongData.deg + rawLongData.billionths / 1000000000.0;
+   return rawLongData.negative ? -ret : ret;
+}
+
 
 String _encodeLocation(){
   Serial.println("_encodeLocation called");
@@ -108,8 +133,8 @@ String _encodeLocation(){
   char temp[2]={' ','\0'};
   latitude  = gps.location.lat();
   longitude = gps.location.lng();
-  gdata.latitude = latitude;
-  gdata.longitude = longitude;
+  gdata = getRawData(gps.location);
+  
   if((latitude && longitude) && latitude != latlong.f[0]
       && longitude != latlong.f[1])
       {     

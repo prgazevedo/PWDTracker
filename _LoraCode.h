@@ -58,22 +58,24 @@ void _sendPacket() {
   LoRa.endPacket(); 
 }
 
+
+void _postParse(){
+  g_latitude = GetGPSString(gdata.latitude);
+  g_longitude = GetGPSString(gdata.longitude);
+  log_packet_data();
+  OLED_COMMS_DATA();
+}
+
 void _Send(){
   writeSerial("_LoraSendPacket"); 
   
    _sendPacket(); 
-  log_packet_data();
-  OLED_COMMS_DATA();
+   _postParse();
  
 
 }
 
-void _postParse(){
-  g_latitude = String(gdata.latitude,10);
-  g_longitude = String(gdata.longitude,10);
-  log_packet_data();
-  OLED_COMMS_DATA();
-}
+
 
 
 void _parsePacket() {

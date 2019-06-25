@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
 #include "_const.h"
 #include "images.h"
 
@@ -72,6 +73,52 @@ void OLED_PUB_DATA(){
 }
 
 //LOGO only
+void logo_sender(){
+    OLED_write(0,50, "SENDER");
+     display.drawXbm(21,0,FRAME_width,FRAME_height,frame1_bits);
+    display.display();
+   delay(FRAME_DELAY);
+   display.clear(); 
+   OLED_write(0,50, "SENDER");
+   display.drawXbm(21,0,FRAME_width,FRAME_height,frame2_bits);
+    display.display();
+   delay(FRAME_DELAY);
+   display.clear(); 
+   OLED_write(0,50, "SENDER");
+    display.drawXbm(21,0,FRAME_width,FRAME_height,frame3_bits);
+     display.display();
+    delay(FRAME_DELAY);
+    display.clear(); 
+    OLED_write(0,50, "SENDER");
+    display.drawXbm(21,0,FRAME_width,FRAME_height,frame4_bits);
+     display.display();
+    delay(3*FRAME_DELAY); 
+    display.clear();
+}
+
+void logo_receiver(){
+   OLED_write(0,50, "RECEIVER");
+     display.drawXbm(21,0,FRAME_width,FRAME_height,frame4_bits);
+    display.display();
+   delay(FRAME_DELAY);
+   display.clear(); 
+   OLED_write(0,50, "RECEIVER");
+   display.drawXbm(21,0,FRAME_width,FRAME_height,frame3_bits);
+    display.display();
+   delay(FRAME_DELAY);
+   display.clear(); 
+   OLED_write(0,50, "RECEIVER");
+    display.drawXbm(21,0,FRAME_width,FRAME_height,frame2_bits);
+     display.display();
+    delay(FRAME_DELAY);
+    display.clear(); 
+    OLED_write(0,50, "RECEIVER");
+    display.drawXbm(21,0,FRAME_width,FRAME_height,frame1_bits);
+     display.display();
+    delay(3*FRAME_DELAY); 
+    display.clear();
+}
+
 void logo(){
 
    display.clear();
@@ -82,23 +129,11 @@ void logo(){
     display.display();
    delay(LOGO_DELAY);
    display.clear(); 
-   display.drawXbm(21,0,FRAME_width,FRAME_height,frame1_bits);
-    display.display();
-   delay(FRAME_DELAY);
-   display.clear(); 
-   display.drawXbm(21,0,FRAME_width,FRAME_height,frame2_bits);
-    display.display();
-   delay(FRAME_DELAY);
-   display.clear(); 
-    display.drawXbm(21,0,FRAME_width,FRAME_height,frame3_bits);
-     display.display();
-    delay(FRAME_DELAY);
-    display.clear(); 
-    display.drawXbm(21,0,FRAME_width,FRAME_height,frame4_bits);
-     display.display();
-    delay(3*FRAME_DELAY); 
-    display.clear();
+   if(_ROLE==0) logo_sender();
+   else logo_receiver();
 }
+
+
 
 void _OledInit(){
   writeSerial("_OledInit");
