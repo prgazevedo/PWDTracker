@@ -17,7 +17,7 @@
 boolean WIFI_CONNECTION = false;
 //LORA Vars
 const int _SPREADING = 9; //spreading factor
-const String _SUBVERSION = "10";
+const String _SUBVERSION = "11";
 //Interval in ms between sending data to other Lora
 #define LORA_SEND_INTERVAL 1000
 //Time of last Lora data packet

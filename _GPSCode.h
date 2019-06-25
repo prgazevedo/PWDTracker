@@ -113,18 +113,21 @@ GpsData getRawData(TinyGPSLocation location){
 }
   
 
-String GetGPSString(coordToSend coord){
-    return (String (coord.negative ? "-" : "+")+String(coord.deg)+"."+String(coord.billionths));
+
+double getCoord(coordToSend rawData){
+   double ret = rawData.deg + rawData.billionths / 1000000000.0;
+   return rawData.negative ? -ret : ret;
 }
 
-double getLat(coordToSend rawLatData){
-   double ret = rawLatData.deg + rawLatData.billionths / 1000000000.0;
-   return rawLatData.negative ? -ret : ret;
+
+String getCoordString(coordToSend rawData){
+     double ret = getCoord(rawData);
+    char TempString[10];  //  Hold The Convert Data
+    dtostrf(ret,3,6,TempString);
+    // dtostrf( [doubleVar] , [sizeBeforePoint] , [sizeAfterPoint] , [WhereToStoreIt] )
+   return String(TempString);
 }
-double getLng(coordToSend rawLongData){
-   double ret = rawLongData.deg + rawLongData.billionths / 1000000000.0;
-   return rawLongData.negative ? -ret : ret;
-}
+
 
 
 String _encodeLocation(){

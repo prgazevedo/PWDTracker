@@ -54,10 +54,10 @@ String createJsonString() {
       json+=String(pdata.timeMillis);
       json+=",";
       json+="\"Latitude\":";
-      json+=GetGPSString(gdata.latitude);
+      json+=getCoordString(gdata.latitude);
       json+=",";
       json+="\"Longitude\":";
-      json+=GetGPSString(gdata.longitude);
+      json+=getCoordString(gdata.longitude);
     json+="}";
   json+="}";
   return json;

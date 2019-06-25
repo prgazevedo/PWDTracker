@@ -60,8 +60,8 @@ void _sendPacket() {
 
 
 void _postParse(){
-  g_latitude = GetGPSString(gdata.latitude);
-  g_longitude = GetGPSString(gdata.longitude);
+  g_latitude = getCoordString(gdata.latitude);
+  g_longitude = getCoordString(gdata.longitude);
   log_packet_data();
   OLED_COMMS_DATA();
 }
