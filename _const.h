@@ -3,7 +3,7 @@
 
 // _MainVar
 // Possible roles SENDER or RECEIVER
-#define _ROLE  0 //SENDER=0 RECEIVER=1
+#define _ROLE  1 //SENDER=0 RECEIVER=1
 
 //WIFI Vars
 //network SSID

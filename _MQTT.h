@@ -1,4 +1,3 @@
-
 #include <PubSubClient.h>
 
 const size_t cSize = 20;
@@ -22,8 +21,7 @@ const String CLIENT_ID =  QUICK_START + DEVICE_ID;
 //Wifi Client
 WiFiClient wifiClient;
 //Client MQTT,server URL and port + Wifi
-//PubSubClient client(MQTT_SERVER, 1883, wifiClient);
-PubSubClient client("m21.cloudmqtt.com", 18939, wifiClient);
+PubSubClient client(MQTT_SERVER, 1883, wifiClient);
 
 //Connect to server MQTT
 void _connectMQTTServer() {
