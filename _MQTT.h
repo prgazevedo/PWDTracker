@@ -22,8 +22,8 @@ const String CLIENT_ID =  QUICK_START + DEVICE_ID;
 //Wifi Client
 WiFiClient wifiClient;
 //Client MQTT,server URL and port + Wifi
-PubSubClient client(MQTT_SERVER, 1883, wifiClient);
-
+//PubSubClient client(MQTT_SERVER, 1883, wifiClient);
+PubSubClient client("m21.cloudmqtt.com", 18939, wifiClient);
 
 //Connect to server MQTT
 void _connectMQTTServer() {
@@ -31,7 +31,8 @@ void _connectMQTTServer() {
   Serial.println("Configured MAC for MQTT is: "+DEVICE_ID);
   OLED_write("Connecting to MQTT Server..."); 
   //Connect to the Id we defined
-  if (client.connect(CLIENT_ID.c_str())) {
+  //if (client.connect(CLIENT_ID.c_str())) {
+  if(client.connect("PWD", "PWD", "pwdteste" )){
     //if success connecting
     Serial.println("connected");
   } else {
@@ -47,12 +48,14 @@ void _connectMQTTServer() {
 String createJsonString() {
   String json = "{";
     json+= "\"d\": {";
+    /*
       json+="\"ID\":";
       json+=String(pdata.ID);
       json+=",";
       json+="\"Time\":";
       json+=String(pdata.timeMillis);
       json+=",";
+      */
       json+="\"Latitude\":";
       json+=getCoordString(gdata.latitude);
       json+=",";

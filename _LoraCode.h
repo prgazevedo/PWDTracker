@@ -43,27 +43,29 @@ void _LoraInit(){
 void _sendPacket() {
    writeSerial("_sendMessage");
   LoRa.beginPacket();
-  LoRa.write(localAddress);            // add sender address
-  LoRa.write(destinationAddress);      // add destination address
+  payload_pdata_size = sizeof(pdata);
+  payload_gdata_size = sizeof(gdata);
+  LoRa.write(payload_pdata_size);      // pdata size
   pdata.ID = packetID++;
   pdata.timeMillis = millis();                        // increment message ID
   //send pdata: ID and TimeStamp
   LoRa.write((uint8_t*)&pdata, sizeof(pdata));
    //send gdata: Latitude and Longitude
+  LoRa.write(payload_gdata_size);      // pdata size
   LoRa.write((uint8_t*)&gdata, sizeof(gdata));
-  payload_size = payload_data.length();
-  LoRa.write(payload_size);           // add payload length
-  LoRa.print(payload_data);                // add payload
+
 
   LoRa.endPacket(); 
 }
 
 
 void _postParse(){
-  g_latitude = getCoordString(gdata.latitude);
-  g_longitude = getCoordString(gdata.longitude);
-  log_packet_data();
-  OLED_COMMS_DATA();
+  if(sizeof(pdata)>0){
+    g_latitude = getCoordString(gdata.latitude);
+    g_longitude = getCoordString(gdata.longitude);
+    log_packet_data();
+    OLED_COMMS_DATA();
+  }
 }
 
 void _Send(){
@@ -78,25 +80,32 @@ void _Send(){
 
 
 
-void _parsePacket() {
+bool _parsePacket() {
   writeSerial("LoRa _parsePacket Called");
-  payload_data="";
-   localAddress = LoRa.read(); 
-   destinationAddress = LoRa.read();  
-   //read pdata: ID and TimeStamp               
-   LoRa.readBytes((uint8_t*)&pdata, sizeof(pdata));
-   //read gdata: Latitude and Longitude
-   LoRa.readBytes((uint8_t*)&gdata, sizeof(gdata));
-   payload_size = LoRa.read();
-    // payload of packet
-    while (LoRa.available())
-    {
-      payload_data += (char)LoRa.read();
-    }
-    rssi_value = LoRa.packetRssi();
-    snr_value = LoRa.packetSnr();
-
-   _postParse();
+   //read pdata: ID and TimeStamp      
+   payload_pdata_size = LoRa.read();    
+   if(payload_pdata_size>0)
+   {       
+     LoRa.readBytes((uint8_t*)&pdata, sizeof(pdata));
+     payload_gdata_size = LoRa.read();
+     //read gdata: Latitude and Longitude
+     if(payload_gdata_size>0) 
+     LoRa.readBytes((uint8_t*)&gdata, sizeof(gdata));
+     
+      // payload of packet
+      /*
+      while (LoRa.available())
+      {
+        payload_data += (char)LoRa.read();
+      }
+      */
+      rssi_value = LoRa.packetRssi();
+      snr_value = LoRa.packetSnr();
+      _postParse();
+      return true;
+   }
+   else return false;
+   
 }
 
 
@@ -104,9 +113,13 @@ void _Receive(){
   //writeSerial("LoRa _parsePacket");
   //parsePacket:check if a packet was received
   int packetSize = LoRa.parsePacket();
-  if (packetSize) { 
-    writeSerial("LoRa _onReceive");
-    _parsePacket();  
+  if (packetSize>0) { 
+    writeSerial("LoRa _Receive calls _parsePacket");
+    if(_parsePacket()){
+       writeSerial("LoRa _Receive _parsePacket success");  
+    }else{
+       writeSerial("LoRa _Receive _parsePacket failure (size of packet?)");  
+    }
   }
 }
 

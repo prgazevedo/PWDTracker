@@ -8,7 +8,8 @@
 //WIFI Vars
 //network SSID
 #define WIFI_MODE WIFI_AP_STA   //Alternatives 
-#define SSID_NAME "WLAN2"
+#define SSID_NAME "PWD"
+#define SSID_PASSWORD "pwdteste"
 #define WIFI_WAIT 500
 #define WIFI_STATUS_TIMER 5000
 #define WIFI_RETRIES  15
@@ -17,7 +18,7 @@
 boolean WIFI_CONNECTION = false;
 //LORA Vars
 const int _SPREADING = 9; //spreading factor
-const String _SUBVERSION = "11";
+const String _SUBVERSION = "13";
 //Interval in ms between sending data to other Lora
 #define LORA_SEND_INTERVAL 1000
 //Time of last Lora data packet
@@ -44,8 +45,8 @@ PacketData pdata;
 int rssi_value = 0;
 unsigned long snr_value = 0;
 String packSize = "--";
-String payload_data = "Hello";
-int payload_size = 0;
+int payload_pdata_size = 0;
+int payload_gdata_size = 0;
 byte destinationAddress = 0xFF;      // destination to send to 11111111
 byte localAddress = 0x01;     // address of this device 00000001
 byte packetID = 0;            // count of outgoing messages

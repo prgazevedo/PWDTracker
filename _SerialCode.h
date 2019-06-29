@@ -44,16 +44,14 @@ void log_packet_data(){
     else{
       Serial.println("packet received:");
     }
-   String s_packetID = String(packetID, DEC);
-   String s_timeStamp = String(time_stamp);
-   writeSerial(" localAddress:"+String(localAddress, HEX));
-   writeSerial(" destination:"+String(destinationAddress, HEX));
+
    writeSerial(" counter:"+String(pdata.ID));
    writeSerial(" time_stamp:"+String(pdata.timeMillis));
    writeSerial(" latitude:"+g_latitude);
    writeSerial(" longitude:"+g_longitude);
-   writeSerial(" payload size:"+String(payload_size,DEC));
-   writeSerial(" payload:"+payload_data);
+   writeSerial(" payload_pdata_size size:"+String(payload_pdata_size,DEC));
+    writeSerial(" payload_gdata_size size:"+String(payload_gdata_size,DEC));
+   
    if(_ROLE==1)
     {
         writeSerial(" RSSI: "+String(rssi_value));

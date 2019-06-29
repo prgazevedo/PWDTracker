@@ -96,7 +96,8 @@ boolean setupWiFi() {
   Serial.println("MAC of device is: "+WiFi.macAddress());
   Serial.println("Connecting to WIFI: "+String(SSID_NAME)); 
    Serial.print("Connecting to WIFI using password:");
-   String password = _readPassword();
+   //String password = _readPassword();
+   String password = SSID_PASSWORD;
    OLED_write("Connecting to WIFI: "+String(SSID_NAME)); 
    const char* cpassword = password.c_str();
   //Connect using SSID and PASSWORD
