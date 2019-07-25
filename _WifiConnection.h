@@ -56,28 +56,28 @@ boolean connectWifi(){
   int wifi_timeout = 0;
   //Wait until established
   Serial.println(" WiFi connecting!");
-  Serial.println("#"+String(SSID_NAME)+"#");
+  Serial.println("#"+String(_SSID_NAME)+"#");
   while (WiFi.status() != WL_CONNECTED) {
 
-    delay(WIFI_WAIT);
-    status_timer+=WIFI_WAIT;
+    delay(_WIFI_WAIT);
+    status_timer+=_WIFI_WAIT;
     Serial.print(".");
     wait_counter++;
-    if(status_timer>WIFI_STATUS_TIMER)
+    if(status_timer>_WIFI_STATUS_TIMER)
     {
        Serial.printf("Wifi connection status: %d\n", WiFi.status());
        status_timer=0;
     }
-    if(wait_counter>WIFI_RETRIES)
+    if(wait_counter>_WIFI_RETRIES)
     {
       //restart wait
-      Serial.println("Wifi connection Retries exceeded:"+String(WIFI_RETRIES)+"  - ReConnection in progress");
+      Serial.println("Wifi connection Retries exceeded:"+String(_WIFI_RETRIES)+"  - ReConnection in progress");
       wait_counter=0;
       wifi_timeout++;
       WiFi.reconnect();
     }
-    if(wifi_timeout>WIFI_TIMEOUT){
-      Serial.println("Wifi connection Timeout:"+String(WIFI_TIMEOUT));
+    if(wifi_timeout>_WIFI_TIMEOUT){
+      Serial.println("Wifi connection Timeout:"+String(_WIFI_TIMEOUT));
       return false;
     }
   }
@@ -91,19 +91,19 @@ boolean connectWifi(){
 //Setup WiFi
 boolean setupWiFi() {
 
-  Serial.println("Wifi Mode is: "+String(WIFI_MODE));
-   WiFi.mode(WIFI_MODE);
+  Serial.println("Wifi Mode is: "+String(_WIFI_MODE));
+   WiFi.mode(_WIFI_MODE);
   Serial.println("MAC of device is: "+WiFi.macAddress());
-  Serial.println("Connecting to WIFI: "+String(SSID_NAME)); 
+  Serial.println("Connecting to WIFI: "+String(_SSID_NAME)); 
    Serial.print("Connecting to WIFI using password:");
    //String password = _readPassword();
-   String password = SSID_PASSWORD;
-   OLED_write("Connecting to WIFI: "+String(SSID_NAME)); 
+   String password = _SSID_PASSWORD;
+   OLED_write("Connecting to WIFI: "+String(_SSID_NAME)); 
    const char* cpassword = password.c_str();
   //Connect using SSID and PASSWORD
   if(password!=""){
     Serial.println(" WiFi.begin called");
-    WiFi.begin(SSID_NAME, cpassword);
+    WiFi.begin(_SSID_NAME, cpassword);
     WiFi.setAutoReconnect(true);
     WiFi.setHostname("PWDServer");
   }
@@ -119,13 +119,18 @@ boolean setupWiFi() {
     //If here it has Connected
     //Display on Serial Monitor
     Serial.println("\n#################");
-    Serial.println("WiFi connected to"+String( SSID_NAME));
+    Serial.println("WiFi connected to"+String( _SSID_NAME));
     Serial.print("IP address : ");
+
+    
     IPAddress Wifi_IP = WiFi.localIP();
-    Serial.println(Wifi_IP);
+    WIFI_IP_STR = Wifi_IP.toString();
+
+    
+    Serial.println(WIFI_IP_STR);
     Serial.println("\n#################");
-    OLED_write("Connected to "+String( SSID_NAME));
-    OLED_write("IP: "+String(Wifi_IP));
+    OLED_write("Connected to: "+String( _SSID_NAME));
+    OLED_write(WIFI_IP_STR);
     return true;
   }
   else

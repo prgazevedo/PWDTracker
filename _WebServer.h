@@ -34,7 +34,7 @@ void _setupWebServer(){
 
 
 bool _checkWebClientTimer(){
-   if (millis() - webserverTimer > WEBSERVER_INTERVAL ){
+   if (millis() - webserverTimer > _WEBSERVER_INTERVAL ){
       webserverTimer=millis();
       return true;
     } 
@@ -69,10 +69,10 @@ void _listen(){
               client.println("<!DOCTYPE html>"); // open wrap the web page
  
               client.print("<html><head><meta name='viewport' content='width=device-width, initial-scale=1.0'><meta charset='utf-8'><style>#map {height: 100%;}html, body {height: 100%;margin: 0;padding: 0;}</style></head>");
-              if(g_latitude=="" || g_longitude=="")  client.print("<body><h1>'Portuguese Water Dog' Server Maps V1."+_SUBVERSION+" got no coordinates!</h1>");
+              if(g_latitude=="" || g_longitude=="")  client.print("<body><h1>'Portuguese Water Dog' Server Maps V1." _SUBVERSION " got no coordinates!</h1>");
              else{
                 Serial.println("_listen: served page for latitude:"+g_latitude+" longitude:"+g_longitude);
-                client.print("<body><h1>'Portuguese Water Dog' Server Maps V1."+_SUBVERSION+"</h1><div id=\"map\"></div>");
+                client.print("<body><h1>'Portuguese Water Dog' Server Maps V1."_SUBVERSION "</h1><div id=\"map\"></div>");
                 client.print("<script>function initMap(){var myLatLng =  {lat: "+g_latitude+", lng: "+g_longitude+"} ; var map = new google.maps.Map(document.getElementById('map'),{center: myLatLng,zoom: 18,mapTypeId: 'satellite'} ); var marker = new google.maps.Marker({ position: myLatLng, map: map, title: 'I am here!'}); }</script><script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyD97IK6vHrYexmh1bbeDI5bQ_EyXzR8dL0&callback=initMap\"></script>");
               }            
               client.print("</body></html>"); // close wrap the web page

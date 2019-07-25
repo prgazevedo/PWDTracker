@@ -48,27 +48,29 @@ void OLED_write(int a, int b, String toWrite){
 
 void OLED_COMMS_DATA(){
   OLED_clear();
-  if(_ROLE==0)OLED_write(0,0,"V1."+_SUBVERSION+"-Sender: ");
-  else OLED_write(0,0,"V1."+_SUBVERSION+"-Receiver-"+SSID_NAME);
-  OLED_write(0,10,"Packet Id:");
-  OLED_write(60,10,String(pdata.ID));
-  OLED_write(0,20,"TimeStamp:");
-  OLED_write(60,20,String(pdata.timeMillis));
-  OLED_write(0,30,"Latitude:");
-  OLED_write(60,30,g_latitude);
-  OLED_write(0,40,"Longitude: ");
-  OLED_write(60,40,g_longitude);
+  if(_ROLE==0)OLED_write(0,0,"V1." _SUBVERSION "-Sender: ");
+  else OLED_write(0,0,"V1." _SUBVERSION "-Receiver-" _SSID_NAME);
+  OLED_write(0,9,"Packet Id:");
+  OLED_write(60,9,String(pdata.ID));
+  OLED_write(0,18,"TimeStamp:");
+  OLED_write(60,18,String(pdata.timeMillis));
+  OLED_write(0,27,"Latitude:");
+  OLED_write(60,27,g_latitude);
+  OLED_write(0,36,"Longitude: ");
+  OLED_write(60,36,g_longitude);
  if(_ROLE==1)
   {
-    OLED_write(0,50,"RSSI/SNR: ");
-    OLED_write(60,50,String(rssi_value)+"/");
-    OLED_write(80,50,String(snr_value));
+    OLED_write(0,45,"RSSI/SNR: ");
+    OLED_write(60,45,String(rssi_value)+"/");
+    OLED_write(80,45,String(snr_value));
+    OLED_write(0,54,"Connect to: ");
+    OLED_write(60,54,WIFI_IP_STR);
   }
 
 }
 
 void OLED_PUB_DATA(){
-    OLED_write(95,50,"PUB");
+    OLED_write(100,45,"PUB");
 
 }
 
@@ -123,7 +125,7 @@ void logo(){
 
    display.clear();
    display.setFont(ArialMT_Plain_10); //large font
-   OLED_write(0,54, "PWD Ver 1."+_SUBVERSION+" STARTING");
+   OLED_write(0,54, "PWD Ver 1." _SUBVERSION " STARTING");
    //logo at "images.h"
    display.drawXbm(0,0,PWD_width,PWD_height,PWD_bits);
     display.display();

@@ -22,11 +22,11 @@
 void _LoraInit(){
   writeSerial("_LoraInit");
     //LORA INIT
-  SPI.begin(SCK,MISO,MOSI,SS); //INIT SERIAL WITH LORA
-  LoRa.setPins(SS,RST,DI00); //PINOUT to be used by LORA library (deve ser chamado antes do LoRa.begin)
+  SPI.begin(_SCK,_MISO,_MOSI,_SS); //INIT SERIAL WITH LORA
+  LoRa.setPins(_SS,_RST,_DI00); //PINOUT to be used by LORA library (deve ser chamado antes do LoRa.begin)
   
   //INIT LORA BAND
-  if (!LoRa.begin(BAND))
+  if (!LoRa.begin(_BAND))
   {
     OLED_write("Starting LoRa failed!");
     writeSerial("Starting LoRa failed!");
@@ -35,11 +35,13 @@ void _LoraInit(){
   LoRa.enableCrc();
 
   //For Range
-  LoRa.setSignalBandwidth(10.4E3); // Supported values are 7.8E3, 10.4E3, 15.6E3, 20.8E3, 31.25E3, 41.7E3, 62.5E3, 125E3, and 250E3.
-  LoRa.setSpreadingFactor(7); // Supported values are between 6 and 12
-  LoRa.setCodingRate4(8); // Supported values are between 5 and 8
-  LoRa.setTxPower(18); // Supported values are between 2 and 17
-
+  if(_LONG_RANGE)
+  {
+     LoRa.setSignalBandwidth(_SIGNAL_BANDWIDTH); // Supported values are 7.8E3, 10.4E3, 15.6E3, 20.8E3, 31.25E3, 41.7E3, 62.5E3, 125E3, and 250E3.
+     LoRa.setSpreadingFactor(_SPREADING_FACTOR); // Supported values are between 6 and 12
+     LoRa.setCodingRate4(_CODING_RATE); // Supported values are between 5 and 8
+     LoRa.setTxPower(_TX_POWER); // Supported values are between 2 and 17
+  }
   
   OLED_write("LoRa Initial success!");
   writeSerial("LoRa Initial success!");
@@ -133,7 +135,7 @@ void _Receive(){
 
   
 bool _sendTimer(){
-  if (millis() - lastSendTime > LORA_SEND_INTERVAL){
+  if (millis() - lastSendTime > _LORA_SEND_INTERVAL){
       //time since last send
       lastSendTime = millis();
       return true;
@@ -143,7 +145,7 @@ bool _sendTimer(){
 }
 
 bool _receiveTimer(){
-  if (pdata.timeMillis > lastSendTime + LORA_SEND_INTERVAL ){
+  if (pdata.timeMillis > lastSendTime + _LORA_SEND_INTERVAL ){
       //time since last send
       lastSendTime = pdata.timeMillis;
       return true;
