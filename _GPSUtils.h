@@ -15,6 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <TinyGPS++.h>
+// The TinyGPS++ object
+TinyGPSPlus gps;
+
+ 
 // This custom version of delay() ensures that the gps object
 // is being "fed".
 static void smartDelay(unsigned long ms)

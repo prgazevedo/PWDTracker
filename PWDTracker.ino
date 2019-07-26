@@ -31,7 +31,7 @@
 #include "_const.h"
 #include "_WifiConnection.h"
 #include "_File.h"
-#include "_MQTT.h"
+#include "_MQTT2.h"
 
 
 void setup()
@@ -55,6 +55,7 @@ void setup()
       writeSerial("setup Receiver called");
       _setupWifiConnection();
       //_setupAP();
+
       _connectMQTTServer();
       _setupWebServer();
   #endif
@@ -84,7 +85,8 @@ void loop()
     _Receive();
     if(_receiveTimer())
     {
-       _publishData();
+      Serial.println("MQTT  _publishData called"); 
+       _publishLocationData();
     }
     if(_checkWebClientTimer())
     {

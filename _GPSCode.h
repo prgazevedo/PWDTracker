@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-#include <TinyGPS++.h>
-// The TinyGPS++ object
-TinyGPSPlus gps;
+
 #include "_GPSUtils.h"
 
+
+
+/* sample test stream
 const char *testStream =
   "$GPRMC,045103.000,A,3014.1984,N,09749.2872,W,0.67,161.46,030913,,,A*7C\r\n"
   "$GPGGA,045104.000,3014.1985,N,09749.2873,W,1,09,1.2,211.6,M,-22.5,M,,0000*62\r\n"
@@ -29,6 +30,35 @@ const char *testStream =
   "$GPRMC,045251.000,A,3014.4275,N,09749.0626,W,0.51,217.94,030913,,,A*7D\r\n"
   "$GPGGA,045252.000,3014.4273,N,09749.0628,W,1,09,1.3,206.9,M,-22.5,M,,0000*6F\r\n";
 
+  void _encodeTestStream(){
+   while (*testStream)
+    gps.encode(*testStream++);
+}
+*/
+
+
+//GPS struct to hold values
+typedef struct CoordToSend
+{
+   uint16_t deg;
+   uint32_t billionths;
+   bool negative;
+public:
+   CoordToSend() : deg(0), billionths(0), negative(false){}
+}coordToSend;
+
+
+typedef struct GpsData{
+ coordToSend latitude,longitude;
+ float hdop_value;
+ String vdop_value;
+ String altitude_value;
+ int fix_time_value;
+ int satellites_value;
+}gpsData;
+
+gpsData gdata;
+
 typedef union {
     float f[2];         // Assigning fVal.f will also populate fVal.bytes;
     unsigned char bytes[8];   // Both fVal.f and fVal.bytes share the same 4 bytes of memory.
@@ -36,9 +66,9 @@ typedef union {
 floatArr2Val latlong; //LAT and Long.
 float latitude;
 float longitude;
+TinyGPSCustom vdop(gps, "GPGSA", 17);
 
-static const int RXPin = 22, TXPin = 23;
-static const uint32_t GPSBaud = 9600;
+
 
 // For stats that happen every 5 seconds
 unsigned long last = 0UL;
@@ -48,8 +78,10 @@ void _SetupGPS()
 {
 
   Serial2.begin(GPSBaud, SERIAL_8N1, RXPin, TXPin);
-  Serial.print(F("Testing TinyGPS++ library v. ")); Serial.println(TinyGPSPlus::libraryVersion());
+  Serial.print(F("Using TinyGPS++ library v. ")); 
+  Serial.println(TinyGPSPlus::libraryVersion());
   Serial.println(F("by Mikal Hart"));
+
   Serial.println();
 }
 
@@ -60,10 +92,7 @@ void _writeGPSHeader(){
 }
 
 
-void _encodeTestStream(){
-   while (*testStream)
-    gps.encode(*testStream++);
-}
+
 
 void _encodeGPS(){
   // Dispatch incoming characters
@@ -101,14 +130,21 @@ void _encodeLocationSummary(){
     Serial.println(F("No GPS data received: check wiring"));
 }
 
-GpsData getRawData(TinyGPSLocation location){
+GpsData getRawGPSData(){
     GpsData gpsData;
-    gpsData.latitude.negative = location.rawLat().negative;
-    gpsData.latitude.deg = location.rawLat().deg;
-    gpsData.latitude.billionths =location.rawLat().billionths;
-    gpsData.longitude.negative = location.rawLng().negative;
-    gpsData.longitude.deg = location.rawLng().deg;
-    gpsData.longitude.billionths =location.rawLng().billionths;
+    gpsData.latitude.negative = gps.location.rawLat().negative;
+    gpsData.latitude.deg = gps.location.rawLat().deg;
+    gpsData.latitude.billionths =gps.location.rawLat().billionths;
+    gpsData.longitude.negative = gps.location.rawLng().negative;
+    gpsData.longitude.deg = gps.location.rawLng().deg;
+    gpsData.longitude.billionths =gps.location.rawLng().billionths;
+    //additional data
+    gpsData.hdop_value=gps.hdop.hdop();
+    gpsData.vdop_value=vdop.value();
+    gpsData.altitude_value=gps.altitude.meters();
+    gpsData.fix_time_value=gps.location.age();
+    gpsData.satellites_value=gps.satellites.value();
+    
     return gpsData;
 }
   
@@ -136,8 +172,8 @@ String _encodeLocation(){
   char temp[2]={' ','\0'};
   latitude  = gps.location.lat();
   longitude = gps.location.lng();
-  gdata = getRawData(gps.location);
-  
+  gdata = getRawGPSData();
+ 
   if((latitude && longitude) && latitude != latlong.f[0]
       && longitude != latlong.f[1])
       {     
@@ -148,7 +184,6 @@ String _encodeLocation(){
         Serial.println(sEncode);
         for(int i = 0; i < 8; i++){
            temp[0]=latlong.bytes[i];
-            //sEncode += hex2str(temp);
             Serial.print(latlong.bytes[i], HEX);
         }
         //Serial.println(sEncode);

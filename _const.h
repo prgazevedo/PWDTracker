@@ -26,6 +26,10 @@
 #define _CODING_RATE 8
 #define _TX_POWER 18
 
+//GPS DEFINITIONS
+static const int RXPin = 22, TXPin = 23;
+static const uint32_t GPSBaud = 9600;
+
 
 //Time of last Lora data packet
 long lastSendTime = 0;
@@ -70,23 +74,8 @@ SSD1306 display(0x3c, 4, 15); //display object
 #define FRAME_DELAY 500 
 #define LOGO_DELAY 5000 
 
-//LORA data struct to send
-
-typedef struct CoordToSend
-{
-   uint16_t deg;
-   uint32_t billionths;
-   bool negative;
-public:
-   CoordToSend() : deg(0), billionths(0), negative(false){}
-}coordToSend;
 
 
-typedef struct GpsData{
- coordToSend latitude,longitude;
-}gpsData;
-
-gpsData gdata;
 String g_latitude ="";
 String g_longitude ="";
 

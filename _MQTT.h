@@ -1,59 +1,61 @@
-#include <PubSubClient.h>
+#include <MQTT.h>
 
-const size_t cSize = 20;
-char cStr [cSize];
 //Server MQTT 
-//#define MQTT_SERVER "quickstart.messaging.internetofthings.ibmcloud.com"
 #define MQTT_SERVER "broker.hivemq.com"
-
 //Name of the topic to send data
-//#define TOPIC_NAME "iot-2/evt/status/fmt/json"
 #define TOPIC_NAME "owntracks/PWD/M1"
 
-//ID we shall use to connect
-//QUICK_START -do not change
-//const String QUICK_START = "d:quickstart:arduino:";
 const String QUICK_START = "";
 //In DEVICE_ID use a unique ID e.g. MAC Address
-//https://quickstart.internetofthings.ibmcloud.com
-//const String DEVICE_ID = "cc50e398fb30";
-const String DEVICE_ID = "M1";
-
+const String DEVICE_ID = "cc50e398fb30";
 //MQTT ClientId 
 const String CLIENT_ID =  QUICK_START + DEVICE_ID;
+
 //Wifi Client
 WiFiClient wifiClient;
-//Client MQTT,server URL and port + Wifi
-PubSubClient client(MQTT_SERVER, 1883, wifiClient);
+MQTTClient pubClient(256);
+
+String lwMQTTErr(lwmqtt_err_t reason);
+String lwMQTTErrConnection(lwmqtt_return_code_t reason);
+void printErrorCodes();
 
 //Connect to server MQTT
 void _connectMQTTServer() {
   Serial.println("connectMQTTServer:Connecting to MQTT Server...");
   Serial.println("Configured MAC for MQTT is: "+DEVICE_ID);
   OLED_write("Connecting to MQTT Server..."); 
+  //Client MQTT,server URL and port + Wifi
+  pubClient.begin(MQTT_SERVER, 1883,wifiClient);
   //Connect to the Id we defined
-  if (client.connect(CLIENT_ID.c_str())) {
-  //if(client.connect("PWD", "PWD", "pwdteste" )){
+    
+  if (pubClient.connect(CLIENT_ID.c_str())) {
     //if success connecting
     Serial.println("MQTT connected");
     OLED_write("Connected to MQTT server");
   } else {
-    Serial.print("error = ");
-    Serial.println(client.state());
+    Serial.println("NOT Connected to MQTT server");
     OLED_write("NOT Connected to MQTT server");
+    printErrorCodes();
   }
+
+  
+    if (pubClient.publish(TOPIC_NAME, "hello from PWD Receiver M1")) {
+      Serial.println("Initial Publish ok at: " MQTT_SERVER " under topic: " TOPIC_NAME);
+    }
+    else {
+      Serial.println("Initial Publish failed");
+    }
   
 }
 
 
 String createJsonString() {
-  String battery = "10";
+  String battery = "--";
   String accuracy = "10";
-  String pressure = "100";
+  String pressure = "--";
   String vertical_accuracy = "100";
   String location_fix_time = "100";
   String altitude_gps_value = "100";
-
   
   String json = "{";
   json+= "\"batt\":";
@@ -74,9 +76,9 @@ String createJsonString() {
   json+= "\"lat\":";
   json+=getCoordString(gdata.latitude);
   json+=",";
-  json+= "\"t\": \"t\"";
+  json+= "\"t\":\"t\"";
   json+=",";
-  json+= "\"conn\": \"w\"";
+  json+= "\"conn\":\"w\"";
   json+=",";
   json+= "\"tst\":";
   json+=String(location_fix_time);
@@ -84,67 +86,95 @@ String createJsonString() {
   json+= "\"alt\":";
   json+=String(altitude_gps_value);
   json+=",";
-  json+= "\"lon\":";
-  json+=getCoordString(gdata.latitude);
-  json+=",";
   json+= "\"_type\":\"location\"";
   json+=",";
-  json+= "\"tid\": \"";
+  json+= "\"tid\":\"";
   json+= DEVICE_ID;
   json+="\"";
   json+="}";
   return json;
-/* template  
-{"batt":64
-,"lon":-9.093604
-,"acc":10
-,"p":101.15644836425781
-,"vac":10
-,"lat":38.763523
-,"t":"t"
-,"conn":"w"
-,"tst":1564047365
-,"alt":10
-,"_type":"location"
-,"tid":"P9"}
-*/
 
 
 }
 
 
-/*
-String createJsonString() {
-  String json = "{";
-    json+= "\"d\": {";
+void printErrorCodes(){
+    Serial.print("error = ");
+    Serial.println(lwMQTTErr(pubClient.lastError()));
+    Serial.print("returnCode = ");
+    Serial.println(lwMQTTErrConnection(pubClient.returnCode()));
+}
+
+
+void publishData(String message){
+     
+      //Publish in the topic 
+        if (pubClient.publish(TOPIC_NAME, message)) {
+          Serial.println("Publish ok at: " MQTT_SERVER " under topic: " TOPIC_NAME);
+        }
+        else {
+          Serial.println("Publish failed");
+          printErrorCodes();
+        }
     
-      json+="\"ID\":";
-      json+=String(pdata.ID);
-      json+=",";
-      json+="\"Time\":";
-      json+=String(pdata.timeMillis);
-      json+=",";
-      
-      json+="\"Latitude\":";
-      json+=getCoordString(gdata.latitude);
-      json+=",";
-      json+="\"Longitude\":";
-      json+=getCoordString(gdata.longitude);
-    json+="}";
-  json+="}";
-  return json;
+      OLED_PUB_DATA();
 }
-*/
 
 
 
-void _publishData(){
-       Serial.print("Publish message: ");
+void _publishLocationData(){
       //create the json to send to the mqtt server
       String msg = createJsonString();
-      Serial.println(msg);
-      //Publish in the topic 
-      //to generate the graph
-      client.publish(TOPIC_NAME, msg.c_str());
-      OLED_PUB_DATA();
+      Serial.print(" _publishLocationDataPublish message: "+msg);
+      publishData(msg);
+}
+
+String lwMQTTErr(lwmqtt_err_t reason)
+{
+  if (reason == lwmqtt_err_t::LWMQTT_SUCCESS)
+    return("Success");
+  else if (reason == lwmqtt_err_t::LWMQTT_BUFFER_TOO_SHORT)
+    return("Buffer too short");
+  else if (reason == lwmqtt_err_t::LWMQTT_VARNUM_OVERFLOW)
+    return("Varnum overflow");
+  else if (reason == lwmqtt_err_t::LWMQTT_NETWORK_FAILED_CONNECT)
+    return("Network failed connect");
+  else if (reason == lwmqtt_err_t::LWMQTT_NETWORK_TIMEOUT)
+    return("Network timeout");
+  else if (reason == lwmqtt_err_t::LWMQTT_NETWORK_FAILED_READ)
+    return("Network failed read");
+  else if (reason == lwmqtt_err_t::LWMQTT_NETWORK_FAILED_WRITE)
+    return("Network failed write");
+  else if (reason == lwmqtt_err_t::LWMQTT_REMAINING_LENGTH_OVERFLOW)
+    return("Remaining length overflow");
+  else if (reason == lwmqtt_err_t::LWMQTT_REMAINING_LENGTH_MISMATCH)
+    return("Remaining length mismatch");
+  else if (reason == lwmqtt_err_t::LWMQTT_MISSING_OR_WRONG_PACKET)
+    return("Missing or wrong packet");
+  else if (reason == lwmqtt_err_t::LWMQTT_CONNECTION_DENIED)
+    return("Connection denied");
+  else if (reason == lwmqtt_err_t::LWMQTT_FAILED_SUBSCRIPTION)
+    return("Failed subscription");
+  else if (reason == lwmqtt_err_t::LWMQTT_SUBACK_ARRAY_OVERFLOW)
+    return("Suback array overflow");
+  else if (reason == lwmqtt_err_t::LWMQTT_PONG_TIMEOUT)
+    return("Pong timeout");
+}
+
+String lwMQTTErrConnection(lwmqtt_return_code_t reason)
+{
+  if (reason == lwmqtt_return_code_t::LWMQTT_CONNECTION_ACCEPTED)
+    return("Connection Accepted");
+  else if (reason == lwmqtt_return_code_t::LWMQTT_UNACCEPTABLE_PROTOCOL)
+    return("Unacceptable Protocol");
+  else if (reason == lwmqtt_return_code_t::LWMQTT_IDENTIFIER_REJECTED)
+    return("Identifier Rejected");
+  else if (reason == lwmqtt_return_code_t::LWMQTT_SERVER_UNAVAILABLE)
+    return("Server Unavailable");
+  else if (reason == lwmqtt_return_code_t::LWMQTT_BAD_USERNAME_OR_PASSWORD)
+    return("Bad UserName/Password");
+  else if (reason == lwmqtt_return_code_t::LWMQTT_NOT_AUTHORIZED)
+    return("Not Authorized");
+  else if (reason == lwmqtt_return_code_t::LWMQTT_UNKNOWN_RETURN_CODE)
+    return("Unknown Return Code");
 }
