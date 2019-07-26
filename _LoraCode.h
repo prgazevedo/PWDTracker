@@ -16,9 +16,19 @@
  */
 
 
-#include "_const.h" 
+#include "_Definitions.h" 
 #include "_LED.h" 
+#include "_Global.h"
 
+// count of outgoing messages
+byte packetID = 0;            
+//Time of last Lora data packet
+long lastSendTime = 0;
+
+/*
+byte destinationAddress = 0xFF;      // destination to send to 11111111
+byte localAddress = 0x01;     // address of this device 00000001
+*/
 void _LoraInit(){
   writeSerial("_LoraInit");
     //LORA INIT
@@ -71,10 +81,10 @@ void _sendPacket() {
 
 void _postParse(){
   if(sizeof(pdata)>0){
-    g_latitude = getCoordString(gdata.latitude);
-    g_longitude = getCoordString(gdata.longitude);
+    g_current_latitude = getCoordString(gdata.latitude);
+    g_current_longitude = getCoordString(gdata.longitude);
     log_packet_data();
-    OLED_COMMS_DATA();
+    OLED_print_data();
   }
 }
 

@@ -28,10 +28,11 @@
 #include "_oledCode.h" //OLED code
 #include "_GPSCode.h" //GPS code
 #include "_LoraCode.h" //Lora Code
-#include "_const.h"
+#include "_Definitions.h"
+#include "_Global.h"
 #include "_WifiConnection.h"
 #include "_File.h"
-#include "_MQTT2.h"
+#include "_MQTT.h"
 
 
 void setup()

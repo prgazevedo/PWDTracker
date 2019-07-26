@@ -16,9 +16,12 @@
  * limitations under the License.
  */
  
-#include "_const.h"
+#include "_Definitions.h"
+#include "_Global.h"
 #include "images.h"
-
+//OLED DEFINITIONS
+//parameters: address,SDA,SCL 
+SSD1306 display(0x3c, 4, 15); //display object 
 
 int line=0;
 void increaseLine(){
@@ -46,7 +49,7 @@ void OLED_write(int a, int b, String toWrite){
     display.display(); //show
 }
 
-void OLED_COMMS_DATA(){
+void OLED_print_data(){
   OLED_clear();
   if(_ROLE==0)OLED_write(0,0,"V1." _SUBVERSION "-Sender: ");
   else OLED_write(0,0,"V1." _SUBVERSION "-Receiver-" _SSID_NAME);
@@ -55,16 +58,16 @@ void OLED_COMMS_DATA(){
   OLED_write(0,18,"TimeStamp:");
   OLED_write(60,18,String(pdata.timeMillis));
   OLED_write(0,27,"Latitude:");
-  OLED_write(60,27,g_latitude);
+  OLED_write(60,27,g_current_latitude);
   OLED_write(0,36,"Longitude: ");
-  OLED_write(60,36,g_longitude);
+  OLED_write(60,36,g_current_longitude);
  if(_ROLE==1)
   {
     OLED_write(0,45,"RSSI/SNR: ");
     OLED_write(60,45,String(rssi_value)+"/");
     OLED_write(80,45,String(snr_value));
     OLED_write(0,54,"Connect to: ");
-    OLED_write(60,54,WIFI_IP_STR);
+    OLED_write(60,54,global_wifi_IP);
   }
 
 }

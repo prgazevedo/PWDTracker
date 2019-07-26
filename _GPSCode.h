@@ -18,7 +18,7 @@
 
 
 #include "_GPSUtils.h"
-
+#include "_Global.h"
 
 
 /* sample test stream
@@ -37,35 +37,6 @@ const char *testStream =
 */
 
 
-//GPS struct to hold values
-typedef struct CoordToSend
-{
-   uint16_t deg;
-   uint32_t billionths;
-   bool negative;
-public:
-   CoordToSend() : deg(0), billionths(0), negative(false){}
-}coordToSend;
-
-
-typedef struct GpsData{
- coordToSend latitude,longitude;
- float hdop_value;
- String vdop_value;
- String altitude_value;
- int fix_time_value;
- int satellites_value;
-}gpsData;
-
-gpsData gdata;
-
-typedef union {
-    float f[2];         // Assigning fVal.f will also populate fVal.bytes;
-    unsigned char bytes[8];   // Both fVal.f and fVal.bytes share the same 4 bytes of memory.
-} floatArr2Val;
-floatArr2Val latlong; //LAT and Long.
-float latitude;
-float longitude;
 TinyGPSCustom vdop(gps, "GPGSA", 17);
 
 

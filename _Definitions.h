@@ -1,10 +1,10 @@
 #ifndef _CONST_H
 #define _CONST_H
 
-// _MainVar
+// _Main DEFINITIONS
 // Possible roles SENDER or RECEIVER
 #define _ROLE  1 //SENDER=0 RECEIVER=1
-#define _SUBVERSION "14"
+#define _SUBVERSION "15"
 
 //LORA DEFINITIONS
 // LORA Pin definition
@@ -27,32 +27,13 @@
 #define _TX_POWER 18
 
 //GPS DEFINITIONS
-static const int RXPin = 22, TXPin = 23;
-static const uint32_t GPSBaud = 9600;
-
-
-//Time of last Lora data packet
-long lastSendTime = 0;
+#define RXPin 22
+#define TXPin 23
+#define GPSBaud 9600
 
 
 
-//LORA data struct to send
-typedef struct {
-  unsigned int ID;
-  long timeMillis;
-}PacketData;
-PacketData pdata;
 
-//LORA packet data
-int rssi_value = 0;
-unsigned long snr_value = 0;
-String packSize = "--";
-int payload_pdata_size = 0;
-int payload_gdata_size = 0;
-byte destinationAddress = 0xFF;      // destination to send to 11111111
-byte localAddress = 0x01;     // address of this device 00000001
-byte packetID = 0;            // count of outgoing messages
-long time_stamp = 0;        // last send time
 //WIFI DEFINITIONS
 //network SSID
 #define _WIFI_MODE WIFI_AP_STA   //Alternatives 
@@ -63,20 +44,13 @@ long time_stamp = 0;        // last send time
 #define _WIFI_RETRIES  15
 #define _WIFI_TIMEOUT 3
 #define _WEBSERVER_INTERVAL 1500
-//WIFI
-boolean WIFI_CONNECTION = false;
-String WIFI_IP_STR = "Not Connected";
 
 
-//OLED DEFINITIONS
-//parameters: address,SDA,SCL 
-SSD1306 display(0x3c, 4, 15); //display object 
+
+
+//OLED LOGO DEFINITIONS
 #define FRAME_DELAY 500 
 #define LOGO_DELAY 5000 
 
-
-
-String g_latitude ="";
-String g_longitude ="";
 
 #endif

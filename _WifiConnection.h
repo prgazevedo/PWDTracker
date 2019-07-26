@@ -2,7 +2,7 @@
 
 #include <WiFi.h>
 #include "_File.h"
-#include "_const.h" 
+#include "_Definitions.h" 
 #include "_WebServer.h"
 
 
@@ -124,13 +124,13 @@ boolean setupWiFi() {
 
     
     IPAddress Wifi_IP = WiFi.localIP();
-    WIFI_IP_STR = Wifi_IP.toString();
+    global_wifi_IP = Wifi_IP.toString();
 
     
-    Serial.println(WIFI_IP_STR);
+    Serial.println(global_wifi_IP);
     Serial.println("\n#################");
     OLED_write("Connected to: "+String( _SSID_NAME));
-    OLED_write(WIFI_IP_STR);
+    OLED_write(global_wifi_IP);
     return true;
   }
   else
@@ -144,8 +144,8 @@ boolean setupWiFi() {
 
 void _setupWifiConnection(){
   Serial.println("_setupWifiConnection called");
-  WIFI_CONNECTION = setupWiFi();
-  if(!WIFI_CONNECTION){
+  global_wifi_conn_state = setupWiFi();
+  if(!global_wifi_conn_state){
     Serial.println("setupWiFi failed - calling _setupAPWebServer");
     _setupAPWebServer();
   }

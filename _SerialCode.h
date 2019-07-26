@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "_const.h" 
-
+#include "_Definitions.h" 
+#include "_Global.h" 
 void writeSerial(String toWrite)
 {
   if(_ROLE==0)
@@ -36,7 +36,7 @@ void _SerialInit()
   writeSerial("_SerialInit");
 }
 
-void log_packet_data(){
+void log_packet_data( ){
    if(_ROLE==0)
     {
       Serial.println("packet sent:");
@@ -47,8 +47,8 @@ void log_packet_data(){
 
    writeSerial(" counter:"+String(pdata.ID));
    writeSerial(" time_stamp:"+String(pdata.timeMillis));
-   writeSerial(" latitude:"+g_latitude);
-   writeSerial(" longitude:"+g_longitude);
+   writeSerial(" latitude:"+g_current_latitude);
+   writeSerial(" longitude:"+g_current_longitude);
    writeSerial(" payload_pdata_size size:"+String(payload_pdata_size,DEC));
     writeSerial(" payload_gdata_size size:"+String(payload_gdata_size,DEC));
    
