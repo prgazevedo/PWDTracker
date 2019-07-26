@@ -59,6 +59,7 @@ void setup()
 
       _connectMQTTServer();
       _setupWebServer();
+      OLED_write("Waiting for LORA Packets");
   #endif
 
   writeSerial("setup Ended");

@@ -111,9 +111,10 @@ GpsData getRawGPSData(){
     gpsData.longitude.billionths =gps.location.rawLng().billionths;
     //additional data
     gpsData.hdop_value=gps.hdop.hdop();
-    gpsData.vdop_value=vdop.value();
+    gpsData.vdop_value=String(vdop.value()).toFloat();
     gpsData.altitude_value=gps.altitude.meters();
-    gpsData.fix_time_value=gps.location.age();
+    gpsData.fix_age_value=gps.location.age();
+    gpsData.fix_time_value=gps.time.value();
     gpsData.satellites_value=gps.satellites.value();
     
     return gpsData;
@@ -126,6 +127,17 @@ double getCoord(coordToSend rawData){
    return rawData.negative ? -ret : ret;
 }
 
+void getAdditionalDataString(GpsData gpsData)
+{
+  gf_current_hdop=gpsData.hdop_value;
+  gf_current_vdop=gpsData.vdop_value;
+  gs_current_hdop=String(gf_current_hdop);
+  gs_current_vdop=String(gf_current_vdop);
+  gs_current_altitude=gpsData.altitude_value;
+  gs_current_fix_age=String(gpsData.fix_age_value);
+  gs_current_fix_time=String(gpsData.fix_time_value);
+  gs_current_satellites=String(gpsData.satellites_value);
+}
 
 String getCoordString(coordToSend rawData){
      double ret = getCoord(rawData);
@@ -138,13 +150,19 @@ String getCoordString(coordToSend rawData){
 
 
 String _encodeLocation(){
-  Serial.println("_encodeLocation called");
-   String sEncode="LatLong: ";
+  Serial.println("_encodeLocation called"); 
+  
+  gdata = getRawGPSData();
+  gs_current_latitude = getCoordString(gdata.latitude);
+  gs_current_longitude = getCoordString(gdata.longitude);
+  getAdditionalDataString(gdata);
+ Serial.println("_encodeLocation has latitude: "+gs_current_latitude+ " and longitude: "+gs_current_longitude);
+ Serial.println("_encodeLocation has addtional data: "+_log_additional_data());
+ /*
   char temp[2]={' ','\0'};
   latitude  = gps.location.lat();
   longitude = gps.location.lng();
-  gdata = getRawGPSData();
- 
+
   if((latitude && longitude) && latitude != latlong.f[0]
       && longitude != latlong.f[1])
       {     
@@ -159,6 +177,8 @@ String _encodeLocation(){
         }
         //Serial.println(sEncode);
       }
+      */
+   String sEncode="LatLong- latitude: "+gs_current_latitude+ " and longitude: "+gs_current_longitude;
   return sEncode;
 }
 

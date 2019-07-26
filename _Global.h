@@ -33,9 +33,10 @@ public:
 typedef struct GpsData{
  coordToSend latitude,longitude;
  float hdop_value;
- String vdop_value;
+ float vdop_value;
  String altitude_value;
- int fix_time_value;
+ int fix_age_value;
+ uint32_t fix_time_value;
  int satellites_value;
 }gpsData;
 
@@ -43,8 +44,18 @@ gpsData gdata;
 
 int payload_gdata_size = 0;
 //Used for outputing to serial and html
-String g_current_latitude;
-String g_current_longitude;
+String gs_current_latitude;
+String gs_current_longitude;
+String gs_current_hdop;
+String gs_current_vdop;
+float gf_current_hdop;
+float gf_current_vdop;
+String gs_current_altitude;
+String gs_current_fix_age;
+String gs_current_fix_time;
+String gs_current_satellites;
+
+
 
 typedef union {
     float f[2];         // Assigning fVal.f will also populate fVal.bytes;

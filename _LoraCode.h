@@ -81,10 +81,11 @@ void _sendPacket() {
 
 void _postParse(){
   if(sizeof(pdata)>0){
-    g_current_latitude = getCoordString(gdata.latitude);
-    g_current_longitude = getCoordString(gdata.longitude);
-    log_packet_data();
-    OLED_print_data();
+    gs_current_latitude = getCoordString(gdata.latitude);
+    gs_current_longitude = getCoordString(gdata.longitude);
+    getAdditionalDataString(gdata);
+    _log_packet_data();
+    _OLED_print_data();
   }
 }
 
@@ -136,6 +137,7 @@ void _Receive(){
   if (packetSize>0) { 
     writeSerial("LoRa _Receive calls _parsePacket");
     if(_parsePacket()){
+       packetID++;
        writeSerial("LoRa _Receive _parsePacket success");  
     }else{
        writeSerial("LoRa _Receive _parsePacket failure (size of packet?)");  

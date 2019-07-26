@@ -23,18 +23,18 @@ void printErrorCodes();
 void _connectMQTTServer() {
   Serial.println("connectMQTTServer:Connecting to MQTT Server...");
   Serial.println("Configured MAC for MQTT is: "+DEVICE_ID);
-  OLED_write("Connecting to MQTT Server..."); 
+  OLED_write("MQTT To:" MQTT_SERVER); 
   //Client MQTT,server URL and port + Wifi
   pubClient.begin(MQTT_SERVER, 1883,wifiClient);
   //Connect to the Id we defined
     
   if (pubClient.connect(CLIENT_ID.c_str())) {
     //if success connecting
-    Serial.println("MQTT connected");
-    OLED_write("Connected to MQTT server");
+    Serial.println("MQTT connected to: " MQTT_SERVER " Topic Name: " TOPIC_NAME);
+    OLED_write("OK!Topic:" TOPIC_NAME);
   } else {
-    Serial.println("NOT Connected to MQTT server");
-    OLED_write("NOT Connected to MQTT server");
+    Serial.println("NOT Connected to MQTT server: " MQTT_SERVER " Topic Name: " TOPIC_NAME);
+    OLED_write("MQTT NOT OK!");
     printErrorCodes();
   }
 
@@ -51,11 +51,11 @@ void _connectMQTTServer() {
 
 String createJsonString() {
   String battery = "--";
-  String accuracy = "10";
+  String horizontal_accuracy = String(gf_current_hdop*GPS_H_PRECISION);
   String pressure = "--";
-  String vertical_accuracy = "100";
-  String location_fix_time = "100";
-  String altitude_gps_value = "100";
+  String vertical_accuracy = String(gf_current_vdop*GPS_V_PRECISION);
+  String location_fix_time = gs_current_fix_time;
+  String altitude_gps_value = gs_current_altitude;
   
   String json = "{";
   json+= "\"batt\":";
@@ -65,7 +65,7 @@ String createJsonString() {
   json+=getCoordString(gdata.longitude);
   json+=",";
   json+= "\"acc\":";
-  json+=String(accuracy);
+  json+=String(horizontal_accuracy);
   json+=",";
   json+= "\"p\":";
   json+=String(pressure);
@@ -111,13 +111,15 @@ void publishData(String message){
       //Publish in the topic 
         if (pubClient.publish(TOPIC_NAME, message)) {
           Serial.println("Publish ok at: " MQTT_SERVER " under topic: " TOPIC_NAME);
+          _OLED_PUB_DATA("PUB:OK");
         }
         else {
-          Serial.println("Publish failed");
+          Serial.println("Publish failed at:" MQTT_SERVER " under topic: " TOPIC_NAME);
+          _OLED_PUB_DATA("PUB:NOK");
           printErrorCodes();
         }
     
-      OLED_PUB_DATA();
+      
 }
 
 

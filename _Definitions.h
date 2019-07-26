@@ -4,7 +4,7 @@
 // _Main DEFINITIONS
 // Possible roles SENDER or RECEIVER
 #define _ROLE  1 //SENDER=0 RECEIVER=1
-#define _SUBVERSION "15"
+#define _SUBVERSION "16"
 
 //LORA DEFINITIONS
 // LORA Pin definition
@@ -30,10 +30,8 @@
 #define RXPin 22
 #define TXPin 23
 #define GPSBaud 9600
-
-
-
-
+#define GPS_H_PRECISION 2.5 // from: https://www.u-blox.com/sites/default/files/products/documents/NEO-7_DataSheet_%28UBX-13003830%29.pdf
+#define GPS_V_PRECISION 5 //double the horizontal - https://portal.u-blox.com/s/question/0D52p00008HKCDmCAP/does-ublox-standalone-positioning-provide-vertical-positioning-how-precise-is-it
 //WIFI DEFINITIONS
 //network SSID
 #define _WIFI_MODE WIFI_AP_STA   //Alternatives 
@@ -45,12 +43,8 @@
 #define _WIFI_TIMEOUT 3
 #define _WEBSERVER_INTERVAL 1500
 
-
-
-
 //OLED LOGO DEFINITIONS
 #define FRAME_DELAY 500 
 #define LOGO_DELAY 5000 
-
 
 #endif

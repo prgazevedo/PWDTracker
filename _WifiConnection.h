@@ -129,8 +129,7 @@ boolean setupWiFi() {
     
     Serial.println(global_wifi_IP);
     Serial.println("\n#################");
-    OLED_write("Connected to: "+String( _SSID_NAME));
-    OLED_write(global_wifi_IP);
+    OLED_write("OK! IP:"+global_wifi_IP);
     return true;
   }
   else

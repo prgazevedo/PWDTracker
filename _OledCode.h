@@ -49,7 +49,7 @@ void OLED_write(int a, int b, String toWrite){
     display.display(); //show
 }
 
-void OLED_print_data(){
+void _OLED_print_data(){
   OLED_clear();
   if(_ROLE==0)OLED_write(0,0,"V1." _SUBVERSION "-Sender: ");
   else OLED_write(0,0,"V1." _SUBVERSION "-Receiver-" _SSID_NAME);
@@ -58,9 +58,18 @@ void OLED_print_data(){
   OLED_write(0,18,"TimeStamp:");
   OLED_write(60,18,String(pdata.timeMillis));
   OLED_write(0,27,"Latitude:");
-  OLED_write(60,27,g_current_latitude);
+  OLED_write(60,27,gs_current_latitude);
   OLED_write(0,36,"Longitude: ");
-  OLED_write(60,36,g_current_longitude);
+  OLED_write(60,36,gs_current_longitude);
+   if(_ROLE==0)
+  { 
+    OLED_write(0,45,"HDOP/SAT: ");
+    OLED_write(60,45,gs_current_hdop+" / "+gs_current_satellites);
+    OLED_write(0,54,"ALT./FIX: ");
+    OLED_write(60,54,gs_current_altitude+" / "+ gs_current_fix_age);
+
+  }
+
  if(_ROLE==1)
   {
     OLED_write(0,45,"RSSI/SNR: ");
@@ -72,8 +81,8 @@ void OLED_print_data(){
 
 }
 
-void OLED_PUB_DATA(){
-    OLED_write(100,45,"PUB");
+void _OLED_PUB_DATA(String pub){
+    OLED_write(100,45,pub);
 
 }
 

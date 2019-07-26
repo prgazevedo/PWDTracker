@@ -36,7 +36,16 @@ void _SerialInit()
   writeSerial("_SerialInit");
 }
 
-void log_packet_data( ){
+String _log_additional_data(){
+    return String("HDOP:"+gs_current_hdop+\
+    " VDOP:"+gs_current_vdop+\
+    " altitude:"+gs_current_altitude+\
+    " fix_age:"+gs_current_fix_age+\
+    " fix_time:"+gs_current_fix_time+\
+    " satellites:"+gs_current_satellites);
+}
+
+void _log_packet_data( ){
    if(_ROLE==0)
     {
       Serial.println("packet sent:");
@@ -47,11 +56,11 @@ void log_packet_data( ){
 
    writeSerial(" counter:"+String(pdata.ID));
    writeSerial(" time_stamp:"+String(pdata.timeMillis));
-   writeSerial(" latitude:"+g_current_latitude);
-   writeSerial(" longitude:"+g_current_longitude);
+   writeSerial(" latitude:"+gs_current_latitude);
+   writeSerial(" longitude:"+gs_current_longitude);
    writeSerial(" payload_pdata_size size:"+String(payload_pdata_size,DEC));
     writeSerial(" payload_gdata_size size:"+String(payload_gdata_size,DEC));
-   
+   writeSerial(" Additional data:"+_log_additional_data());
    if(_ROLE==1)
     {
         writeSerial(" RSSI: "+String(rssi_value));
