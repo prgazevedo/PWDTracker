@@ -14,7 +14,7 @@ Requires following libraries:
 Board library:
  - Heltec: https://github.com/HelTecAutomation/Heltec_ESP32
 
-In Const.h change _ROLE to either 0 or 1 //SENDER=0 RECEIVER=1
+In _Definitions.h change _ROLE to either 0 or 1 //SENDER=0 RECEIVER=1
 
 ## Current Hardware
 - Upload this code via Serial to Heltec Wifi Lora: https://heltec.org/project/wifi-lora-32/
@@ -27,9 +27,11 @@ In Const.h change _ROLE to either 0 or 1 //SENDER=0 RECEIVER=1
  - Power up both devices (power to all via USB)
  - Check that both devices boot up and present correct GPS data in OLED display
  - Connect to receiver IP via http to view the location of sender device
- - View latitude and longitude of sender in the cloud: https://quickstart.internetofthings.ibmcloud.com/#/device/cc50e398fb30/sensor/
+ - View latitude and longitude of sender in the cloud: mqtt://broker.hivemq.com:1883 Topice:owntracks/PWD/#
 
 ## TODO
+ - Add webserver to configure options
+ - Add discovery of wireless LAN tracking
  - Remove all String usage (avoid) and use CString or Char*
  - Optimize Sender code to reduce power consumption
  - Setup and test autoconnect functionality in Receiver
