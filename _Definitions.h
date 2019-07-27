@@ -3,7 +3,7 @@
 
 // _Main DEFINITIONS
 // Possible roles SENDER or RECEIVER
-#define _ROLE  1 //SENDER=0 RECEIVER=1
+#define _ROLE  0 //SENDER=0 RECEIVER=1
 #define _SUBVERSION "16"
 
 //LORA DEFINITIONS
@@ -35,8 +35,8 @@
 //WIFI DEFINITIONS
 //network SSID
 #define _WIFI_MODE WIFI_AP_STA   //Alternatives 
-#define _SSID_NAME "WLAN2"
-#define _SSID_PASSWORD "pedro2chave2"
+#define _SSID_NAME "PWD"
+#define _SSID_PASSWORD "pwdteste"
 #define _WIFI_WAIT 500
 #define _WIFI_STATUS_TIMER 5000
 #define _WIFI_RETRIES  15

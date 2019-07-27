@@ -109,7 +109,7 @@ bool _parsePacket() {
    {       
      LoRa.readBytes((uint8_t*)&pdata, sizeof(pdata));
      payload_gdata_size = LoRa.read();
-     //read gdata: Latitude and Longitude
+     //read gdata: Latitude and Longitude + additional attributes
      if(payload_gdata_size>0) 
      LoRa.readBytes((uint8_t*)&gdata, sizeof(gdata));
      

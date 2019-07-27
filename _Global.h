@@ -34,7 +34,7 @@ typedef struct GpsData{
  coordToSend latitude,longitude;
  float hdop_value;
  float vdop_value;
- String altitude_value;
+ int altitude_value;
  int fix_age_value;
  uint32_t fix_time_value;
  int satellites_value;

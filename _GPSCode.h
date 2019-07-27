@@ -133,7 +133,7 @@ void getAdditionalDataString(GpsData gpsData)
   gf_current_vdop=gpsData.vdop_value;
   gs_current_hdop=String(gf_current_hdop);
   gs_current_vdop=String(gf_current_vdop);
-  gs_current_altitude=gpsData.altitude_value;
+  gs_current_altitude=String(gpsData.altitude_value);
   gs_current_fix_age=String(gpsData.fix_age_value);
   gs_current_fix_time=String(gpsData.fix_time_value);
   gs_current_satellites=String(gpsData.satellites_value);

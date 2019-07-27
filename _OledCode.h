@@ -82,7 +82,7 @@ void _OLED_print_data(){
 }
 
 void _OLED_PUB_DATA(String pub){
-    OLED_write(100,45,pub);
+    OLED_write(90,45,pub);
 
 }
 
