@@ -89,6 +89,7 @@ void _OLED_PUB_DATA(String pub){
 //LOGO only
 void logo_sender(){
     OLED_write(0,50, "SENDER");
+    /*
      display.drawXbm(21,0,FRAME_width,FRAME_height,frame1_bits);
     display.display();
    delay(FRAME_DELAY);
@@ -107,11 +108,14 @@ void logo_sender(){
     display.drawXbm(21,0,FRAME_width,FRAME_height,frame4_bits);
      display.display();
     delay(3*FRAME_DELAY); 
+    */
     display.clear();
+    
 }
 
 void logo_receiver(){
    OLED_write(0,50, "RECEIVER");
+   /*
      display.drawXbm(21,0,FRAME_width,FRAME_height,frame4_bits);
     display.display();
    delay(FRAME_DELAY);
@@ -130,6 +134,7 @@ void logo_receiver(){
     display.drawXbm(21,0,FRAME_width,FRAME_height,frame1_bits);
      display.display();
     delay(3*FRAME_DELAY); 
+    */
     display.clear();
 }
 

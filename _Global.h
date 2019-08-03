@@ -17,7 +17,10 @@
  */
 #ifndef _GLOBAL_H
 #define _GLOBAL_H
- 
+
+//MAC Address
+uint64_t chipid;
+String s_chipid;
 //GPS 
 //Struct to hold location values
 typedef struct CoordToSend

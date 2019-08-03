@@ -4,7 +4,7 @@
 // _Main DEFINITIONS
 // Possible roles SENDER or RECEIVER
 #define _ROLE  1 //SENDER=0 RECEIVER=1
-#define _SUBVERSION "16"
+#define _SUBVERSION "17"
 
 //LORA DEFINITIONS
 // LORA Pin definition
@@ -42,9 +42,19 @@
 #define _WIFI_RETRIES  15
 #define _WIFI_TIMEOUT 3
 #define _WEBSERVER_INTERVAL 1500
+//WEBSERVER
+#define HTTP_PORT 80
 
 //OLED LOGO DEFINITIONS
 #define FRAME_DELAY 500 
 #define LOGO_DELAY 5000 
+
+//MQTT DEFINITIONS
+//Server MQTT 
+#define MQTT_SERVER "broker.hivemq.com"
+#define MQTT_SERVER_PORT 1883
+#define MQTT_MESSAGE_SIZE 256
+//Name of the topic to send data
+#define TOPIC_NAME_HEADER "owntracks/PWD/TEST"
 
 #endif

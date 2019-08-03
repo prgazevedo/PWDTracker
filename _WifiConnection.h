@@ -3,17 +3,19 @@
 #include <WiFi.h>
 #include "_File.h"
 #include "_Definitions.h" 
-#include "_WebServer.h"
-
-
-
 
 
 // Replace with your network credentials
 const char* ssid     = "ESP32-Access-Point";
 const char* password = "123456789";
 
-
+void _setupMAC(){
+  chipid=ESP.getEfuseMac();//The chip ID is essentially its MAC address(length: 6 bytes).
+  Serial.printf("ESP32 Chip ID = %04X",(uint16_t)(chipid>>32));//print High 2 bytes
+  Serial.printf("%08X\n",(uint32_t)chipid);//print Low 4bytes.
+  s_chipid = String((uint16_t)(chipid>>32),HEX)+String((uint32_t)chipid,HEX);
+  Serial.println("ESP32 Chip ID String:"+s_chipid);
+}
 
 void _setupAP(){
     // Connect to Wi-Fi network with SSID and password
@@ -24,6 +26,11 @@ void _setupAP(){
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
+}
+
+void updateWifiIP(){
+  IPAddress Wifi_IP = WiFi.localIP();
+    global_wifi_IP = Wifi_IP.toString();
 }
 
 
@@ -42,10 +49,12 @@ String wl_status_to_string(int status) {
 
 
 String _checkWifiState(){
-   //Serial.println("Wifi connection to: "+String(WiFi.SSID()));
-  //Serial.println("Wifi connection status:"+wl_status_to_string( WiFi.status()));
+   Serial.println("Wifi connection to: "+String(WiFi.SSID()));
+    Serial.println("Wifi connection status:"+wl_status_to_string( WiFi.status()));
+   updateWifiIP();
    Serial.print("Wifi local IP: ");
-   //Serial.println(WiFi.localIP());
+   Serial.println(WiFi.localIP());
+   
 }
 
 //Connect to WiFi
@@ -88,6 +97,7 @@ boolean connectWifi(){
 
 
 
+
 //Setup WiFi
 boolean setupWiFi() {
 
@@ -123,8 +133,7 @@ boolean setupWiFi() {
     Serial.print("IP address : ");
 
     
-    IPAddress Wifi_IP = WiFi.localIP();
-    global_wifi_IP = Wifi_IP.toString();
+    updateWifiIP();
 
     
     Serial.println(global_wifi_IP);
@@ -139,14 +148,12 @@ boolean setupWiFi() {
 }
 
 
-
-
 void _setupWifiConnection(){
   Serial.println("_setupWifiConnection called");
   global_wifi_conn_state = setupWiFi();
   if(!global_wifi_conn_state){
-    Serial.println("setupWiFi failed - calling _setupAPWebServer");
-    _setupAPWebServer();
+    Serial.println("setupWiFi failed ");
+
   }
 
 }

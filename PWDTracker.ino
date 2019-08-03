@@ -33,6 +33,7 @@
 #include "_WifiConnection.h"
 #include "_File.h"
 #include "_MQTT.h"
+#include "_httpServer.h"
 
 
 void setup()
@@ -43,6 +44,7 @@ void setup()
   _SerialInit();
   _OledInit();
   _LoraInit();
+  _setupMAC();
   _Fileinit();
   writeSerial(_readPassword());
   #if _ROLE == 0
@@ -58,7 +60,8 @@ void setup()
       //_setupAP();
 
       _connectMQTTServer();
-      _setupWebServer();
+      //_setupWebServer();
+      _setupHTTPSSERVER();
       OLED_write("Waiting for LORA Packets");
   #endif
 
@@ -90,10 +93,12 @@ void loop()
       Serial.println("MQTT  _publishData called"); 
        _publishLocationData();
     }
-    if(_checkWebClientTimer())
+    if(_checkhttpserverTimer())
     {
-        Serial.println("WiFiServer _listen called"); 
-      _listen();
+
+      _httpServerLoop();
+      //Serial.println("WiFiServer _listen called"); 
+      //_listen();
       //_checkWifiState();
     }
     _LEDBlink();

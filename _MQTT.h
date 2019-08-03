@@ -1,46 +1,37 @@
 #include <MQTT.h>
 
-//Server MQTT 
-#define MQTT_SERVER "broker.hivemq.com"
-//Name of the topic to send data
-#define TOPIC_NAME "owntracks/PWD/M1"
-
-const String QUICK_START = "";
-//In DEVICE_ID use a unique ID e.g. MAC Address
-const String DEVICE_ID = "cc50e398fb30";
-//MQTT ClientId 
-const String CLIENT_ID =  QUICK_START + DEVICE_ID;
-
 //Wifi Client
 WiFiClient wifiClient;
-MQTTClient pubClient(256);
+MQTTClient pubClient(MQTT_MESSAGE_SIZE);
 
+String sTopic;
 String lwMQTTErr(lwmqtt_err_t reason);
 String lwMQTTErrConnection(lwmqtt_return_code_t reason);
 void printErrorCodes();
 
 //Connect to server MQTT
 void _connectMQTTServer() {
+  sTopic =TOPIC_NAME_HEADER ;//+ s_chipid;
   Serial.println("connectMQTTServer:Connecting to MQTT Server...");
-  Serial.println("Configured MAC for MQTT is: "+DEVICE_ID);
+  Serial.println("Configured MAC for MQTT is: "+s_chipid);
   OLED_write("MQTT To:" MQTT_SERVER); 
   //Client MQTT,server URL and port + Wifi
-  pubClient.begin(MQTT_SERVER, 1883,wifiClient);
+  pubClient.begin(MQTT_SERVER, MQTT_SERVER_PORT ,wifiClient);
   //Connect to the Id we defined
     
-  if (pubClient.connect(CLIENT_ID.c_str())) {
+  if (pubClient.connect(s_chipid.c_str())) {
     //if success connecting
-    Serial.println("MQTT connected to: " MQTT_SERVER " Topic Name: " TOPIC_NAME);
-    OLED_write("OK!Topic:" TOPIC_NAME);
+    Serial.println("MQTT connected to: " MQTT_SERVER " Topic Name: "+sTopic);
+    OLED_write("OK!Topic:" +sTopic);
   } else {
-    Serial.println("NOT Connected to MQTT server: " MQTT_SERVER " Topic Name: " TOPIC_NAME);
+    Serial.println("NOT Connected to MQTT server: " MQTT_SERVER " Topic Name: "+sTopic);
     OLED_write("MQTT NOT OK!");
     printErrorCodes();
   }
 
   
-    if (pubClient.publish(TOPIC_NAME, "hello from PWD Receiver M1")) {
-      Serial.println("Initial Publish ok at: " MQTT_SERVER " under topic: " TOPIC_NAME);
+    if (pubClient.publish(sTopic, "hello from PWD Receiver M1")) {
+      Serial.println("Initial Publish ok at: " MQTT_SERVER " under topic: "+sTopic);
     }
     else {
       Serial.println("Initial Publish failed");
@@ -50,9 +41,9 @@ void _connectMQTTServer() {
 
 
 String createJsonString() {
-  String battery = "--";
+  String battery = "-No data-";
   String horizontal_accuracy = String(gf_current_hdop*GPS_H_PRECISION);
-  String pressure = "--";
+  String pressure = "-No data-";
   String vertical_accuracy = String(gf_current_vdop*GPS_V_PRECISION);
   String location_fix_time = gs_current_fix_time;
   String altitude_gps_value = gs_current_altitude;
@@ -89,7 +80,7 @@ String createJsonString() {
   json+= "\"_type\":\"location\"";
   json+=",";
   json+= "\"tid\":\"";
-  json+= DEVICE_ID;
+  json+= s_chipid;
   json+="\"";
   json+="}";
   return json;
@@ -109,12 +100,12 @@ void printErrorCodes(){
 void publishData(String message){
      
       //Publish in the topic 
-        if (pubClient.publish(TOPIC_NAME, message)) {
-          Serial.println("Publish ok at: " MQTT_SERVER " under topic: " TOPIC_NAME);
+        if (pubClient.publish(sTopic, message)) {
+          Serial.println("Publish ok at: " MQTT_SERVER " under topic: " +sTopic);
           _OLED_PUB_DATA("PUB:OK");
         }
         else {
-          Serial.println("Publish failed at:" MQTT_SERVER " under topic: " TOPIC_NAME);
+          Serial.println("Publish failed at:" MQTT_SERVER " under topic: " +sTopic);
           _OLED_PUB_DATA("PUB:NOK");
           printErrorCodes();
         }
