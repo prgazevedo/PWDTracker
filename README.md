@@ -11,6 +11,7 @@ Requires following libraries:
  - SSD1306 for OLED: https://github.com/ThingPulse/esp8266-oled-ssd1306
  - Lora radio by Sandeep: https://github.com/sandeepmistry/arduino-LoRa
  - MQTT by Joël Gähwiler: https://github.com/256dpi/arduino-mqtt
+ - TLS-enabled web server for the ESP32 using the Arduino core: https://github.com/fhessel/esp32_https_server
 Board library:
  - Heltec: https://github.com/HelTecAutomation/Heltec_ESP32
 
