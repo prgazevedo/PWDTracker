@@ -37,6 +37,9 @@
 #define _WIFI_MODE WIFI_AP_STA   //Alternatives 
 #define _SSID_NAME "PWD"
 #define _SSID_PASSWORD "pwdteste"
+#define _SSID_CONNECT_TIMER 30000
+#define _PORTAL_TIMER 180000
+//OLD
 #define _WIFI_WAIT 500
 #define _WIFI_STATUS_TIMER 5000
 #define _WIFI_RETRIES  15

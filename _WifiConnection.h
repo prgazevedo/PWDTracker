@@ -1,13 +1,12 @@
 
 
 #include <WiFi.h>
+
 #include "_File.h"
 #include "_Definitions.h" 
 
 
-// Replace with your network credentials
-const char* ssid     = "ESP32-Access-Point";
-const char* password = "123456789";
+
 
 void _setupMAC(){
   chipid=ESP.getEfuseMac();//The chip ID is essentially its MAC address(length: 6 bytes).
@@ -17,16 +16,6 @@ void _setupMAC(){
   Serial.println("ESP32 Chip ID String:"+s_chipid);
 }
 
-void _setupAP(){
-    // Connect to Wi-Fi network with SSID and password
-  Serial.print("Setting AP (Access Point)…");
-  // Remove the password parameter, if you want the AP (Access Point) to be open
-  WiFi.softAP(ssid, password);
-  Serial.println("\n#################");
-  IPAddress IP = WiFi.softAPIP();
-  Serial.print("AP IP address: ");
-  Serial.println(IP);
-}
 
 void updateWifiIP(){
   IPAddress Wifi_IP = WiFi.localIP();

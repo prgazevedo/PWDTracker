@@ -30,7 +30,8 @@
 #include "_LoraCode.h" //Lora Code
 #include "_Definitions.h"
 #include "_Global.h"
-#include "_WifiConnection.h"
+//#include "_WifiConnection.h"
+#include "_WifiManager.h"
 #include "_File.h"
 #include "_MQTT.h"
 #include "_httpServer.h"
@@ -56,8 +57,9 @@ void setup()
   #if _ROLE == 1
       // only compile MQTT if in receiver mode
       writeSerial("setup Receiver called");
-      _setupWifiConnection();
-      //_setupAP();
+      //_setupWifiConnection();
+      
+      _setupAutoconnect();
 
       _connectMQTTServer();
       //_setupWebServer();
@@ -90,16 +92,23 @@ void loop()
     _Receive();
     if(_receiveTimer())
     {
-      Serial.println("MQTT  _publishData called"); 
+      Serial.println("MQTT  _publishLocationData called"); 
        _publishLocationData();
     }
     if(_checkhttpserverTimer())
     {
+      
+      if(bPortalStarted){
+        Serial.println("_handlePortal called"); 
+        _handlePortal();
+      }
+      else {
+        Serial.println("_httpServerLoop called"); 
+        _updateWifiState();
+        _checkWifiState();
+        _httpServerLoop();
+      }
 
-      _httpServerLoop();
-      //Serial.println("WiFiServer _listen called"); 
-      //_listen();
-      //_checkWifiState();
     }
     _LEDBlink();
     
