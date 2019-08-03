@@ -14,7 +14,7 @@ Requires following libraries:
  - TLS-enabled web server for the ESP32 using the Arduino core: https://github.com/fhessel/esp32_https_server
 Board library:
  - Heltec: https://github.com/HelTecAutomation/Heltec_ESP32
-
+For low power uses: https://github.com/espressif/esp-idf/blob/master/components/esp32/include/esp_sleep.h
 In _Definitions.h change _ROLE to either 0 or 1 //SENDER=0 RECEIVER=1
 
 ## Upload Current Bin files
