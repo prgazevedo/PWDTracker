@@ -158,26 +158,6 @@ String _encodeLocation(){
   getAdditionalDataString(gdata);
  Serial.println("_encodeLocation has latitude: "+gs_current_latitude+ " and longitude: "+gs_current_longitude);
  Serial.println("_encodeLocation has addtional data: "+_log_additional_data());
- /*
-  char temp[2]={' ','\0'};
-  latitude  = gps.location.lat();
-  longitude = gps.location.lng();
-
-  if((latitude && longitude) && latitude != latlong.f[0]
-      && longitude != latlong.f[1])
-      {     
-         Serial.println("_encodeLocation has latitude/longitude");
-        latlong.f[0] = latitude;
-        latlong.f[1] = longitude;
-         
-        Serial.println(sEncode);
-        for(int i = 0; i < 8; i++){
-           temp[0]=latlong.bytes[i];
-            Serial.print(latlong.bytes[i], HEX);
-        }
-        //Serial.println(sEncode);
-      }
-      */
    String sEncode="LatLong- latitude: "+gs_current_latitude+ " and longitude: "+gs_current_longitude;
   return sEncode;
 }
@@ -351,11 +331,10 @@ void _getGPS()
     
     _encodeGPS();
     //_encodeTestStream();
-    _encodeLocationSummary();
-    Serial.println("_encodeLocationSummary called");
+    //_encodeLocationSummary();
+    //Serial.println("_encodeLocationSummary called");
     _encodeLocation();
     Serial.println("_encodeLocation called");
-    _writeSerialGPS();
-    Serial.println("_writeSerialGPS called");
-   
+    //_writeSerialGPS();
+    //Serial.println("_writeSerialGPS called");
 }

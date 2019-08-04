@@ -4,7 +4,7 @@
 // _Main DEFINITIONS
 // Possible roles SENDER or RECEIVER
 #define _ROLE  1 //SENDER=0 RECEIVER=1
-#define _SUBVERSION "17"
+#define _SUBVERSION "18"
 
 //LORA DEFINITIONS
 // LORA Pin definition
@@ -15,17 +15,20 @@
 #define _RST     14   // GPIO14 -- SX127x's RESET
 #define _DI00    26   // GPIO26 -- SX127x's IRQ(Interrupt Request)
 //Interval in ms between sending data to other Lora
-#define _LORA_SEND_INTERVAL 1000
+#define _LORA_SEND_INTERVAL 10000
 // LORA Band definition
 #define _BAND    868E6  //Radio Frequency
 #define _PABOOST true
-#define _LONG_RANGE false
+#define _LONG_RANGE true
+#define _MAXPOWER true
 ///LONG RANGE SETUP
-#define _SIGNAL_BANDWIDTH 10.4E3
-#define _SPREADING_FACTOR 7 
-#define _CODING_RATE 8
-#define _TX_POWER 18
-
+#define _SIGNAL_BANDWIDTH 62.5E3
+#define _SPREADING_FACTOR 12 
+#define _CODING_RATE 5
+#define _MAX_TX_POWER 20
+//LOW POWER DEFINITIONS
+#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
+#define TIME_TO_SLEEP  20       /* Time ESP32 will go to sleep (in seconds) */
 //GPS DEFINITIONS
 #define RXPin 22
 #define TXPin 23
@@ -39,6 +42,8 @@
 #define _SSID_PASSWORD "pwdteste"
 #define _SSID_CONNECT_TIMER 30000
 #define _PORTAL_TIMER 180000
+//EEPROM Settings
+#define CREDENTIAL_OFFSET 0
 //OLD
 #define _WIFI_WAIT 500
 #define _WIFI_STATUS_TIMER 5000

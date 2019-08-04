@@ -31,6 +31,7 @@ String _readPassword(){
     Serial.println("Failed to open file for reading");
     return "";
   }
+
   
   Serial.println("Password file open:");
   while(file.available()){

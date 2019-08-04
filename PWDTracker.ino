@@ -37,6 +37,7 @@
 #include "_httpServer.h"
 
 
+
 void setup()
 {
   writeSerial("PWD setup Begin");
@@ -78,13 +79,13 @@ void loop()
 
   if(_ROLE==0)
   {
-     if (_sendTimer()){
-      
-     //_ROLE==SENDER
-      _Send();
-      _LEDBlink();
-      _getGPS();
-     }
+
+     //_LEDBlink(); //SAVE POWER
+     if (_sendTimer()){      
+        _getGPS();
+        _Send();
+      }
+
   }
   else
   {
@@ -105,7 +106,8 @@ void loop()
       else {
         Serial.println("_httpServerLoop called"); 
         _updateWifiState();
-        _checkWifiState();
+        //_checkWifiState();
+        
         _httpServerLoop();
       }
 
