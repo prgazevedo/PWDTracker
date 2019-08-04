@@ -60,14 +60,16 @@ void _LoraInit(){
   
   OLED_write("LoRa Initial success!");
   writeSerial("LoRa Initial success!");
-  delay(1000);
+  
 }
 
 
 
 void _sendPacket() {
    writeSerial("_sendMessage");
+
   LoRa.beginPacket();
+  writeSerial("beginPacket");
   payload_pdata_size = sizeof(pdata);
   payload_gdata_size = sizeof(gdata);
   LoRa.write(payload_pdata_size);      // pdata size
@@ -81,6 +83,7 @@ void _sendPacket() {
 
 
   LoRa.endPacket(); 
+  LoRa.sleep();
 }
 
 

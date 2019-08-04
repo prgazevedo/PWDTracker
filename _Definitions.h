@@ -3,9 +3,18 @@
 
 // _Main DEFINITIONS
 // Possible roles SENDER or RECEIVER
-#define _ROLE  1 //SENDER=0 RECEIVER=1
+#define _ROLE  0 //SENDER=0 RECEIVER=1
 #define _SUBVERSION "18"
 
+//POWER DEFINITIONS
+#define BATTERY_PIN 13
+#define _FULL_BATTERY    3700  //The default battery is 3700mv when the battery is fully charged.
+#define _POWER_READ_INTERVAL 20000
+#define CPU_FREQ 80 //160
+#define CONFIG_ESP_CONSOLE_UART_NUM 1
+//LOW POWER DEFINITIONS
+#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
+#define TIME_TO_SLEEP  2       /* Time ESP32 will go to sleep (in seconds) */
 //LORA DEFINITIONS
 // LORA Pin definition
 #define _SCK     5    // GPIO5  -- SX127x's SCK
@@ -26,9 +35,7 @@
 #define _SPREADING_FACTOR 12 
 #define _CODING_RATE 5
 #define _MAX_TX_POWER 20
-//LOW POWER DEFINITIONS
-#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
-#define TIME_TO_SLEEP  20       /* Time ESP32 will go to sleep (in seconds) */
+
 //GPS DEFINITIONS
 #define RXPin 22
 #define TXPin 23

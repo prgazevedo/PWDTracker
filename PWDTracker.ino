@@ -30,11 +30,11 @@
 #include "_LoraCode.h" //Lora Code
 #include "_Definitions.h"
 #include "_Global.h"
-//#include "_WifiConnection.h"
 #include "_WifiManager.h"
 #include "_File.h"
 #include "_MQTT.h"
 #include "_httpServer.h"
+#include "_lowPower.h"
 
 
 
@@ -49,11 +49,14 @@ void setup()
   _setupMAC();
   _Fileinit();
   writeSerial(_readPassword());
+  _setupPower();
   #if _ROLE == 0
    writeSerial("setup Sender called");
     
     // Setup the GPS
     _SetupGPS();
+    // Setup lower CPU frequency
+    _switch_freq(CPU_FREQ);
   #endif
   #if _ROLE == 1
       // only compile MQTT if in receiver mode
@@ -76,15 +79,20 @@ void setup()
 
 void loop()
 { 
-
+  if(_readPowerTimer()){
+    _readBatteryPower();
+  }
   if(_ROLE==0)
   {
+     //_light_sleep();
 
      //_LEDBlink(); //SAVE POWER
-     if (_sendTimer()){      
+     if (_sendTimer()){  
+          
         _getGPS();
         _Send();
       }
+
 
   }
   else

@@ -49,6 +49,10 @@ char outputString[80]; // general output string, 80 bytes
 
 
 
+String _printInt64(uint64_t toConvert, int BASE){
+ return String((uint32_t)(toConvert>>32),BASE)+String((uint32_t)toConvert,BASE);
+}
+
 //******************** String Routines ******************
 
 void printString(const char *str) // all output directed through this one routine, so can change Serial.print to whatever display is being used

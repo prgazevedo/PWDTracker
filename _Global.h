@@ -87,4 +87,6 @@ int snr_value = 0;
 String global_wifi_IP = "Not Connected";
 //WIFI Connection State
 bool global_wifi_conn_state = false;
+//BATTERY
+String sVBAT ="";
 #endif
