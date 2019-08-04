@@ -97,6 +97,7 @@ bool retryConnection(){
       Serial.println("retryConnection() isLastCredential"); 
       Config.autoRise=true;
       Portal.config(Config);
+        OLED_write("Connect SSID:"+ (String)(const char *)sconfig.ssid);
       return Portal.begin((const char *)sconfig.ssid,(const char *)sconfig.password,_SSID_CONNECT_TIMER);
     }
     else{
@@ -122,14 +123,17 @@ void _setupAutoconnect() {
   Portal.onDetect(portalStarted);
    // Establish a connection with an autoReconnect option.
    Serial.println("Establish a connection with an autoReconnect option - Portal.begin to SSID:" _SSID_NAME " with password:" _SSID_PASSWORD " with timer: "+String(_SSID_CONNECT_TIMER)+ "(ms)");
+  OLED_write("Connect SSID:" _SSID_NAME);
   if (Portal.begin(_SSID_NAME,_SSID_PASSWORD,_SSID_CONNECT_TIMER)) {
     Serial.println("Connection established, AutoConnect service started with WIFI_STA mode. WiFi connected at:" + WiFi.localIP().toString());
      bPortalStarted=false; 
   }else if(retryConnection()){
+  
      Serial.println("retryConnection - Connection established, AutoConnect service started with WIFI_STA mode. WiFi connected at:" + WiFi.localIP().toString());
      bPortalStarted=false; 
   }
   else{
+    OLED_write("Connect SSID failed. Open Portal");
     Serial.println("WiFi NOT connected. Captive portal started with WIFI_AP_STA mode");
     bPortalStarted=true;
     _checkWifiState();

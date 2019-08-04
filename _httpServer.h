@@ -114,7 +114,7 @@ void handleRoot(HTTPRequest * req, HTTPResponse * res) {
       // want to use authentication and redirect the user to a secure connection
       // for that
       if (req->isSecure()) {
-        res->println("<p>You are connected via <strong>HTTPS</strong>.</p>");
+        res->println("<p>You are connected via <strong>HTTPS</strong>. Address is: <a href=https://www.google.pt/maps/@"+gs_current_latitude+","+gs_current_longitude+",15z>Link to marker</a></p>");
       } else {
         res->println("<p>You are connected via <strong>HTTP</strong>.</p>");
       }

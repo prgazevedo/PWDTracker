@@ -53,8 +53,8 @@ void _OLED_print_data(){
   OLED_clear();
   if(_ROLE==0)OLED_write(0,0,"V1." _SUBVERSION "-Sender: ");
   else OLED_write(0,0,"V1." _SUBVERSION "-RCV:" _SSID_NAME);
-  OLED_write(70,0, "BAT:");
-  OLED_write(100,0, sVBAT+"V");
+  OLED_write(78,0, "BAT:");
+  OLED_write(108,0, sVBAT+"V");
   OLED_write(0,9,"Packet Id:");
   OLED_write(60,9,String(pdata.ID));
   OLED_write(0,18,"TimeStamp:");
