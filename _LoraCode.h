@@ -20,6 +20,7 @@
 #include "_LED.h" 
 #include "_Global.h"
 
+
 // count of outgoing messages
 byte packetID = 0;            
 //Time of last Lora data packet
@@ -43,26 +44,32 @@ void _LoraInit(){
     while (1);
   }
   LoRa.enableCrc();
-
+  if(_MAXPOWER){
+    LoRa.setTxPower(_MAX_TX_POWER);
+    writeSerial("LoRa is using Power:"+String(_MAX_TX_POWER));
+  }
+  
   //For Range
   if(_LONG_RANGE)
   {
+     writeSerial("LoRa is using Long Range settings- SignalBandwidth: "+String(_SIGNAL_BANDWIDTH)+"Hz SpreadingFactor: "+String(_SPREADING_FACTOR)+"(6-12) CodingRate:"+String(_CODING_RATE)); 
      LoRa.setSignalBandwidth(_SIGNAL_BANDWIDTH); // Supported values are 7.8E3, 10.4E3, 15.6E3, 20.8E3, 31.25E3, 41.7E3, 62.5E3, 125E3, and 250E3.
      LoRa.setSpreadingFactor(_SPREADING_FACTOR); // Supported values are between 6 and 12
      LoRa.setCodingRate4(_CODING_RATE); // Supported values are between 5 and 8
-     LoRa.setTxPower(_TX_POWER); // Supported values are between 2 and 17
   }
   
   OLED_write("LoRa Initial success!");
   writeSerial("LoRa Initial success!");
-  delay(1000);
+  
 }
 
 
 
 void _sendPacket() {
    writeSerial("_sendMessage");
+
   LoRa.beginPacket();
+  writeSerial("beginPacket");
   payload_pdata_size = sizeof(pdata);
   payload_gdata_size = sizeof(gdata);
   LoRa.write(payload_pdata_size);      // pdata size
@@ -76,6 +83,7 @@ void _sendPacket() {
 
 
   LoRa.endPacket(); 
+  LoRa.sleep();
 }
 
 
