@@ -85,6 +85,7 @@ int snr_value = 0;
 
 //WIFI IP
 String global_wifi_IP = "Not Connected";
+String gcurrent_ssid = _SSID_NAME;
 //WIFI Connection State
 bool global_wifi_conn_state = false;
 //BATTERY

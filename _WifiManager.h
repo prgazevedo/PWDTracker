@@ -50,7 +50,7 @@ void _updateWifiState(){
 
 String _checkWifiState(){
   if(!bPortalStarted) {
-   Serial.println("_checkWifiState Wifi connection to WLAN "+String(WiFi.SSID()));
+   Serial.println("_checkWifiState Wifi connection to WLAN "+WiFi.SSID());
     Serial.println("_checkWifiState Wifi connection status:"+wl_status_to_string( WiFi.status()));
     Serial.println("ap_portal:"+String(Config.apid)+" password:"+String(Config.psk)+" IP is:"+String(Config.staip));
    
@@ -60,6 +60,7 @@ String _checkWifiState(){
        Serial.println("_checkWifiState Wifi connection to portal");
        Serial.println("ap_portal:"+String(Config.apid)+" password:"+String(Config.psk));
     }
+    Serial.println("Exit _checkWifiState");
     
 }
 
@@ -97,10 +98,11 @@ bool retryConnection(){
       Serial.println("retryConnection() isLastCredential"); 
       Config.autoRise=true;
       Portal.config(Config);
-        OLED_write("Connect SSID:"+ (String)(const char *)sconfig.ssid);
+        OLED_write("Attempt Connect SSID:"+ (String)(const char *)sconfig.ssid);
       return Portal.begin((const char *)sconfig.ssid,(const char *)sconfig.password,_SSID_CONNECT_TIMER);
     }
     else{
+      OLED_write("Attempt Connect SSID:"+ (String)(const char *)sconfig.ssid);
       Portal.begin((const char *)sconfig.ssid,(const char *)sconfig.password,_SSID_CONNECT_TIMER);
     }
    
@@ -125,10 +127,12 @@ void _setupAutoconnect() {
    Serial.println("Establish a connection with an autoReconnect option - Portal.begin to SSID:" _SSID_NAME " with password:" _SSID_PASSWORD " with timer: "+String(_SSID_CONNECT_TIMER)+ "(ms)");
   OLED_write("Connect SSID:" _SSID_NAME);
   if (Portal.begin(_SSID_NAME,_SSID_PASSWORD,_SSID_CONNECT_TIMER)) {
+    OLED_write("Connect SSID success. SSID:"+WiFi.SSID());
     Serial.println("Connection established, AutoConnect service started with WIFI_STA mode. WiFi connected at:" + WiFi.localIP().toString());
      bPortalStarted=false; 
   }else if(retryConnection()){
-  
+      gcurrent_ssid = WiFi.SSID();
+      OLED_write("Connect SSID success. SSID:"+WiFi.SSID());
      Serial.println("retryConnection - Connection established, AutoConnect service started with WIFI_STA mode. WiFi connected at:" + WiFi.localIP().toString());
      bPortalStarted=false; 
   }
@@ -136,33 +140,13 @@ void _setupAutoconnect() {
     OLED_write("Connect SSID failed. Open Portal");
     Serial.println("WiFi NOT connected. Captive portal started with WIFI_AP_STA mode");
     bPortalStarted=true;
-    _checkWifiState();
+    //_checkWifiState();
   }
+  Serial.println("_setupAutoconnect exit");
 }
 
 
 
-
-/*
-// Retrieve the credential entries from EEPROM
-String _loadCredentials() {
-  AutoConnectCredential  ac(CREDENTIAL_OFFSET);
-  struct station_config  entry;
-  String content = "";
-  String printcontent = "";
-  uint8_t  count = ac.entries();          // Get number of entries.
-   Serial.println("LoadCredentials() load"+String(count)+" SSID entries");
-  for (int8_t i = 0; i < count; i++) {    // Loads all entries.
-    ac.load(i, &entry);
-    // Build a SSID line of an HTML.
-    content += String("<li>") + String((char *)entry.ssid) + String("</li>");
-    printcontent += String("SSID Entry: ") + String((char *)entry.ssid);
-  }
-  Serial.println("LoadCredential() the saved credentials are:"+printcontent);
-  
-  return content;
-}
-*/
 
 void _handlePortal(){
    Serial.println("_handlePortal called: Portal.handleClient");
