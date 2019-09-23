@@ -57,8 +57,12 @@ String gs_current_altitude;
 String gs_current_fix_age;
 String gs_current_fix_time;
 String gs_current_satellites;
+String gspath;
 
-
+typedef struct GpsPath{
+  String lat;
+  String lng;
+}gpsPath;
 
 typedef union {
     float f[2];         // Assigning fVal.f will also populate fVal.bytes;

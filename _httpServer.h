@@ -109,7 +109,8 @@ void handleRoot(HTTPRequest * req, HTTPResponse * res) {
    else{
       res->println("_listen: served page for latitude:"+gs_current_latitude+" longitude:"+gs_current_longitude);
       res->print("<body><h1>'Portuguese Water Dog' Server Maps V1."_SUBVERSION "</h1>");
-      
+      //Button TEST res->print("<form action = \"/Save position\" method=\"GET\">GPIO 0: <input type=\"submit\" name=\"on\" value=\"ON\"/>&nbsp;<input type=\"submit\" name=\"off\" value=\"OFF\"/>&nbsp;</form>\r\n"
+
             // You can check if you are connected over a secure connection, eg. if you
       // want to use authentication and redirect the user to a secure connection
       // for that
@@ -120,7 +121,19 @@ void handleRoot(HTTPRequest * req, HTTPResponse * res) {
       }
   
      res->print("<div id=\"map\"></div>");
-      res->print("<script>function initMap(){var myLatLng =  {lat: "+gs_current_latitude+", lng: "+gs_current_longitude+"} ; var map = new google.maps.Map(document.getElementById('map'),{center: myLatLng,zoom: 18,mapTypeId: 'satellite'} ); var marker = new google.maps.Marker({ position: myLatLng, map: map, title: 'I am here!'}); }</script><script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyD97IK6vHrYexmh1bbeDI5bQ_EyXzR8dL0&callback=initMap\"></script>");
+     //TEST
+          res->print(
+            "<script>function initMap(){var Coordinates = [ "+gspath+"];"
+             "var Path = new google.maps.Polyline({"
+            "path: Coordinates,"
+            "geodesic: true,"
+            "strokeColor: '#FF0000',"
+            "strokeOpacity: 1.0,"
+            "strokeWeight: 2"
+            "});"
+        "var myLatLng =  {lat: "+gs_current_latitude+", lng: "+gs_current_longitude+"} ; var map = new google.maps.Map(document.getElementById('map'),{center: myLatLng,zoom: 18,mapTypeId: 'satellite'} ); var marker = new google.maps.Marker({ position: myLatLng, map: map, title: 'I am here!'}); }</script><script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyD97IK6vHrYexmh1bbeDI5bQ_EyXzR8dL0&callback=initMap\"></script>");
+
+     //OLD res->print("<script>function initMap(){var myLatLng =  {lat: "+gs_current_latitude+", lng: "+gs_current_longitude+"} ; var map = new google.maps.Map(document.getElementById('map'),{center: myLatLng,zoom: 18,mapTypeId: 'satellite'} ); var marker = new google.maps.Marker({ position: myLatLng, map: map, title: 'I am here!'}); }</script><script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyD97IK6vHrYexmh1bbeDI5bQ_EyXzR8dL0&callback=initMap\"></script>");
     }            
     res->print("</body></html>"); // close wrap the web page
 
