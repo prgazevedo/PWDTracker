@@ -19,7 +19,7 @@
 
 #include "_GPSUtils.h"
 #include "_Global.h"
-#include "_Path.h"
+
 
 /* sample test stream
 const char *testStream =
@@ -154,8 +154,6 @@ String _encodeLocation(){
   gdata = getRawGPSData();
   gs_current_latitude = getCoordString(gdata.latitude);
   gs_current_longitude = getCoordString(gdata.longitude);
-  _addCoordsToPath(gs_current_latitude,gs_current_longitude);
-  _encodePath();
   getAdditionalDataString(gdata);
  Serial.println("_encodeLocation has latitude: "+gs_current_latitude+ " and longitude: "+gs_current_longitude);
  Serial.println("_encodeLocation has addtional data: "+_log_additional_data());

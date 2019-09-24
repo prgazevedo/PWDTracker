@@ -49,6 +49,9 @@ int payload_gdata_size = 0;
 //Used for outputing to serial and html
 String gs_current_latitude;
 String gs_current_longitude;
+bool bFirst = true;
+String gs_rcv_latitude;
+String gs_rcv_longitude;
 String gs_current_hdop;
 String gs_current_vdop;
 float gf_current_hdop;

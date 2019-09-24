@@ -19,7 +19,7 @@
 #include "_Definitions.h" 
 #include "_LED.h" 
 #include "_Global.h"
-
+#include "_Path.h"
 
 // count of outgoing messages
 byte packetID = 0;            
@@ -94,6 +94,8 @@ void _postParse(){
     getAdditionalDataString(gdata);
     _log_packet_data();
     _OLED_print_data();
+     _addCoordsToPath(gs_current_latitude,gs_current_longitude);
+     _encodePath();
   }
 }
 

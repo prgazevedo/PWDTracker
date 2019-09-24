@@ -123,15 +123,24 @@ void handleRoot(HTTPRequest * req, HTTPResponse * res) {
      res->print("<div id=\"map\"></div>");
      //TEST
           res->print(
-            "<script>function initMap(){var Coordinates = [ "+gspath+"];"
-             "var Path = new google.maps.Polyline({"
-            "path: Coordinates,"
-            "geodesic: true,"
-            "strokeColor: '#FF0000',"
-            "strokeOpacity: 1.0,"
-            "strokeWeight: 2"
-            "});"
-        "var myLatLng =  {lat: "+gs_current_latitude+", lng: "+gs_current_longitude+"} ; var map = new google.maps.Map(document.getElementById('map'),{center: myLatLng,zoom: 18,mapTypeId: 'satellite'} ); var marker = new google.maps.Marker({ position: myLatLng, map: map, title: 'I am here!'}); }</script><script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyD97IK6vHrYexmh1bbeDI5bQ_EyXzR8dL0&callback=initMap\"></script>");
+            "<script>function initMap(){"
+            "var myLatLng =  {lat: "+gs_current_latitude+", lng: "+gs_current_longitude+"} ; "
+            "var firstLatLng =  {lat: "+gs_rcv_latitude+", lng: "+gs_rcv_longitude+"} ; "
+            "var sndmarker = new google.maps.Marker({ position: myLatLng, map: map, title: 'Sender is here!'});"
+            "sndmarker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');"
+            "var rcvmarker = new google.maps.Marker({ position: firstLatLng, map: map, title: 'Receiver is here!'});"
+            "rcvmarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');"
+            " var map = new google.maps.Map(document.getElementById('map'),{center: myLatLng,zoom: 18,mapTypeId: 'satellite'} ); "
+            "var Coordinates = [ "+gspath+"];"
+             "var Path = new google.maps.Polyline({path: Coordinates, geodesic: true, strokeColor: '#FF0000', strokeOpacity: 1.0, strokeWeight: 2 });"
+             "sndmarker.setMap(map);"
+             "rcvmarker.setMap(map);"
+             "Path.setMap(map);"
+             "}"
+             //"Path.setMap(map);}"
+    
+
+        "</script><script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyD97IK6vHrYexmh1bbeDI5bQ_EyXzR8dL0&callback=initMap\"></script>");
 
      //OLD res->print("<script>function initMap(){var myLatLng =  {lat: "+gs_current_latitude+", lng: "+gs_current_longitude+"} ; var map = new google.maps.Map(document.getElementById('map'),{center: myLatLng,zoom: 18,mapTypeId: 'satellite'} ); var marker = new google.maps.Marker({ position: myLatLng, map: map, title: 'I am here!'}); }</script><script async defer src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyD97IK6vHrYexmh1bbeDI5bQ_EyXzR8dL0&callback=initMap\"></script>");
     }            
