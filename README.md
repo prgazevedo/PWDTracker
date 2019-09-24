@@ -12,6 +12,7 @@ Requires following libraries:
  - Lora radio by Sandeep: https://github.com/sandeepmistry/arduino-LoRa
  - MQTT by Joël Gähwiler: https://github.com/256dpi/arduino-mqtt
  - TLS-enabled web server for the ESP32 using the Arduino core: https://github.com/fhessel/esp32_https_server
+  - SimpleList: https://github.com/blackhack/ArduLibraries/tree/master/SimpleList
 Board library:
  - Heltec: https://github.com/HelTecAutomation/Heltec_ESP32
 For low power uses: https://github.com/espressif/esp-idf/blob/master/components/esp32/include/esp_sleep.h
@@ -46,7 +47,7 @@ An example of the full setup is
  - Download the App at AppStore(https://apps.apple.com/us/app/owntracks/id692424691) or GooglePlay (https://play.google.com/store/apps/details?id=org.owntracks.android&hl=en)
 
 ## TODO
- - Add webserver to configure options
+ - ~~Add webserver to configure options~~ (DONE)
  - Add discovery of wireless LAN tracking
  - Remove all String usage (avoid) and use CString or Char*
  - Optimize Sender code to reduce power consumption
