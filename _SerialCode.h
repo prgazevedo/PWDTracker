@@ -58,8 +58,11 @@ void _log_packet_data( ){
    writeSerial(" time_stamp:"+String(pdata.timeMillis));
    writeSerial(" latitude:"+gs_current_latitude);
    writeSerial(" longitude:"+gs_current_longitude);
-   writeSerial(" payload_pdata_size size:"+String(payload_pdata_size,DEC));
-    writeSerial(" payload_gdata_size size:"+String(payload_gdata_size,DEC));
+ writeSerial("sizeof packetdata (ID+TimeStamp):"+String(payload_pdata_size,DEC)+" bytes");
+   writeSerial(" sizeof gpsdata (lat+long):"+String(payload_gdata_size,DEC)+" bytes");
+   writeSerial(" sizeof packetdatasize:"+String(sizeof(payload_pdata_size),DEC)+" bytes");
+   writeSerial(" sizeof gpsdatasize:"+String(sizeof(payload_gdata_size),DEC)+" bytes");
+  writeSerial(" total size of packet is:"+String((payload_pdata_size+payload_gdata_size+sizeof(payload_gdata_size)+sizeof(payload_pdata_size)),DEC)+" bytes");
    writeSerial(" Additional data:"+_log_additional_data());
    if(_ROLE==1)
     {

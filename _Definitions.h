@@ -4,7 +4,7 @@
 // _Main DEFINITIONS
 // Possible roles SENDER or RECEIVER
 #define _ROLE  1 //SENDER=0 RECEIVER=1
-#define _SUBVERSION "20"
+#define _SUBVERSION "20.1"
 
 //POWER DEFINITIONS
 #define BATTERY_PIN 13
@@ -24,17 +24,17 @@
 #define _RST     14   // GPIO14 -- SX127x's RESET
 #define _DI00    26   // GPIO26 -- SX127x's IRQ(Interrupt Request)
 //Interval in ms between sending data to other Lora
-#define _LORA_SEND_INTERVAL 10000
+#define _LORA_SEND_INTERVAL 28518 //see here:https://www.loratools.nl/#/airtime
 // LORA Band definition
 #define _BAND    868E6  //Radio Frequency
 #define _PABOOST true
 #define _LONG_RANGE true
 #define _MAXPOWER true
 ///LONG RANGE SETUP
-#define _SIGNAL_BANDWIDTH 62.5E3
-#define _SPREADING_FACTOR 12 
-#define _CODING_RATE 5
-#define _MAX_TX_POWER 20
+#define _SIGNAL_BANDWIDTH 125E3
+#define _SPREADING_FACTOR 8 
+#define _CODING_RATE 7
+#define _MAX_TX_POWER 14
 
 //GPS DEFINITIONS
 #define RXPin 22
